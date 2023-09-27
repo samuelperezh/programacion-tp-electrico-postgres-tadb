@@ -15,3 +15,39 @@ create user programacion_tp_electrico_usr with encrypted password 'programacion_
 grant create, connect on database programacion_tp_electrico_db to programacion_tp_electrico_usr;
 grant create on schema public to programacion_tp_electrico_usr;
 grant select, insert, update, delete, trigger on all tables in schema public to programacion_tp_electrico_usr;
+
+-- ***********************
+-- Creación de las tablas
+-- ***********************
+
+-- Tabla: horarios
+create table horarios (
+    id int primary key not null,
+    horario_pico boolean not null
+)
+
+-- Tabla: cargadores
+create table cargadores (
+    id int primary key generated always as identity,
+    cargador varchar(10) not null
+)
+
+-- Tabla: autobuses
+create table autobuses (
+    id int primary key generated always as identity,
+    autobus varchar(10) not null
+)
+
+-- Tabla: utilizacion_cargadores
+create table utilizacion_cargadores (
+    cargador_id int references cargadores(id),
+    autobus_id int references autobuses(id),
+    horario_id int references horarios(id)
+)
+
+-- Tabla: operacion_autobuses / estado_autobuses
+create table operacion_autobuses (
+    id int primary key generated always as identity,
+    autobus_id int references autobuses(id)
+    horario_id int references horarios(id)
+)
