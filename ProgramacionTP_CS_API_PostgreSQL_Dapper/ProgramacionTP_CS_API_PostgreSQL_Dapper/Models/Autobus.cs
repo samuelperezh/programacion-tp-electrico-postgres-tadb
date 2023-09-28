@@ -1,19 +1,19 @@
 ﻿namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Models
 {
-    public class Autobuses
+    public class Autobus
     {
         public int Id { get; set; } = 0;
-        public string Autobus { get; set; } = string.Empty;
+        public string Nombre { get; set; } = string.Empty;
 
         public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType())
                 return false;
 
-            var otroAutobus = (Autobuses)obj;
+            var otroAutobus = (Autobus)obj;
 
             return Id == otroAutobus.Id
-                && Autobus.Equals(otroAutobus.Autobus);
+                && Nombre.Equals(otroAutobus.Nombre);
         }
 
         public override int GetHashCode()
@@ -22,7 +22,7 @@
             {
                 int hash = 3;
                 hash = hash * 5 + Id.GetHashCode();
-                hash = hash * 5 + (Autobus?.GetHashCode() ?? 0);
+                hash = hash * 5 + (Nombre?.GetHashCode() ?? 0);
 
                 return hash;
             }

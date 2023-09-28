@@ -7,10 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Autobuses.cs" />
+    <Compile Remove="Models\OperacionAutobuses.cs" />
+    <Compile Remove="Models\UtilizacionCargadores.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="DbContexts\NewFile.txt" />
+    <None Remove="Interfaces\IHorarioRepository.c" />
+    <None Remove="Interfaces\NewFile.txt" />
     <None Remove="Models\NewFile.txt" />
     <None Remove="Models\NewFile1.txt" />
     <None Remove="Models\OperacionAutobuses" />
+    <None Remove="Repositories\NewFile.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,8 +36,6 @@
 
   <ItemGroup>
     <Folder Include="Helpers\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Repositories\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
