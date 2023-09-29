@@ -40,14 +40,16 @@ create table autobuses (
 
 -- Tabla: utilizacion_cargadores
 create table utilizacion_cargadores (
-    cargador_id int references cargadores(id),
-    autobus_id int references autobuses(id),
-    horario_id int references horarios(id)
+    cargador_id int references cargadores(id) unique not null,
+    autobus_id int references autobuses(id)unique not null,
+    horario_id int references horarios(id)unique not null,
+    primary key (cargador_id, autobus_id, horario_id)
 )
 
 -- Tabla: operacion_autobuses / estado_autobuses
 create table operacion_autobuses (
-    id int primary key generated always as identity,
-    autobus_id int references autobuses(id)
-    horario_id int references horarios(id)
+    autobus_id int references autobuses(id) unique not null,
+    horario_id int references horarios(id) unique not null,
+    primary key (autobus_id, horario_id)
 )
+
