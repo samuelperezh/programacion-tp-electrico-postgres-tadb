@@ -1,5 +1,5 @@
 ﻿using ProgramacionTP_CS_API_PostgreSQL_Dapper.DbContexts;
-using ProgramacionTP_CS_API_PostgreSQL_Dapper.Helpers;
+using ProgramacionTB_CS_API_PostgreSQL_Dapper.Helpers;
 using ProgramacionTP_CS_API_PostgreSQL_Dapper.Interfaces;
 using ProgramacionTB_CS_API_PostgreSQL_Dapper.Models;
 using Dapper;
