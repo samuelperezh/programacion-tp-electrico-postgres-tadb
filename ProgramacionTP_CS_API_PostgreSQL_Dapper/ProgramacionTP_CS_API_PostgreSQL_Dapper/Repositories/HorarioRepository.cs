@@ -21,11 +21,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
         {
             using (var conexion = contextoDB.CreateConnection())
             {
-                string sentenciaSQL = "SELECT c.id, c.nombre, c.sitio_web, c.instagram, " +
-                                      "(u.municipio || ', ' || u.departamento) ubicacion, c.ubicacion_id " +
-                                      "FROM cervecerias c JOIN ubicaciones u " +
-                                      "ON c.ubicacion_id = u.id " +
-                                      "ORDER BY c.id DESC";
+                string sentenciaSQL = "SELECT h.id, h.horario_pico FROM horarios h ORDER BY h.id DESC";
 
                 var resultadoHorarios = await conexion.QueryAsync<Horario>(sentenciaSQL,
                                         new DynamicParameters());
@@ -44,10 +40,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                 parametrosSentencia.Add("@horario_id", horario_id,
                                         DbType.Int32, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT c.id, c.nombre, c.sitio_web, c.instagram, " +
-                                      "(u.municipio || ', ' || u.departamento) ubicacion, c.ubicacion_id " +
-                                      "FROM cervecerias c JOIN ubicaciones u ON c.ubicacion_id = u.id " +
-                                      "WHERE c.id = @cerveceria_id ";
+                string sentenciaSQL = "SELECT h.id, h.horario_pico FROM horarioshc WHERE h.id = @horario_id ";
 
                 var resultado = await conexion.QueryAsync<Horario>(sentenciaSQL,
                                     parametrosSentencia);

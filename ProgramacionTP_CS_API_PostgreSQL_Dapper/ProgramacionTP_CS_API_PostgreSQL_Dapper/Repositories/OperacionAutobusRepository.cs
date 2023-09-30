@@ -21,11 +21,9 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             {
                 using (var conexion = contextoDB.CreateConnection())
                 {
-                    string sentenciaSQL = "SELECT c.id, c.nombre, c.sitio_web, c.instagram, " +
-                                          "(u.municipio || ', ' || u.departamento) ubicacion, c.ubicacion_id " +
-                                          "FROM cervecerias c JOIN ubicaciones u " +
-                                          "ON c.ubicacion_id = u.id " +
-                                          "ORDER BY c.id DESC";
+                    string sentenciaSQL = "SELECT autobus_id, horario_id"+
+                                           "FROM operacion_autobuses" +
+                                            "ORDER BY autobus_id DESC, horario_id DESC";
 
                     var resultadoOperacionAutobuses = await conexion.QueryAsync<OperacionAutobus>(sentenciaSQL,
                                             new DynamicParameters());
@@ -33,31 +31,6 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                     return resultadoOperacionAutobuses;
                 }
             }
-
-        public async Task<OperacionAutobus> GetByIdAsync(int autobus_id)
-        {
-            OperacionAutobus unaOperacionAutobus = new OperacionAutobus();
-
-            using (var conexion = contextoDB.CreateConnection())
-            {
-                DynamicParameters parametrosSentencia = new DynamicParameters();
-                parametrosSentencia.Add("@autobus_id", autobus_id,
-                                        DbType.Int32, ParameterDirection.Input);
-
-                string sentenciaSQL = "SELECT c.id, c.nombre, c.sitio_web, c.instagram, " +
-                                      "(u.municipio || ', ' || u.departamento) ubicacion, c.ubicacion_id " +
-                                      "FROM cervecerias c JOIN ubicaciones u ON c.ubicacion_id = u.id " +
-                                      "WHERE c.id = @cerveceria_id ";
-
-                var resultado = await conexion.QueryAsync<OperacionAutobus>(sentenciaSQL,
-                                    parametrosSentencia);
-
-                if (resultado.Count() > 0)
-                    unaOperacionAutobus = resultado.First();
-            }
-
-            return unaOperacionAutobus;
-        }
 
         public async Task<bool> CreateAsync(OperacionAutobus unaOperacionAutobus)
             {
