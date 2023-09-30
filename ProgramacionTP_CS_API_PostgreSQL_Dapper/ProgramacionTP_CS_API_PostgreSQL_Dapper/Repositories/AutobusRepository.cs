@@ -21,7 +21,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
         {
             using (var conexion = contextoDB.CreateConnection())
             {
-                string sentenciaSQL = "SELECT id, autobus FROM autobuses ORDER BY id DESC";
+                string sentenciaSQL = "SELECT a.id, a.autobus FROM autobuses a ORDER BY a.id DESC";
 
                 var resultadoAutobuses = await conexion.QueryAsync<Autobus>(sentenciaSQL,
                                         new DynamicParameters());
@@ -40,7 +40,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                 parametrosSentencia.Add("@autobus_id", autobus_id,
                                         DbType.Int32, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT id, autobus FROM autobuses WHERE id = @autobus_id";
+                string sentenciaSQL = "SELECT a.id, a.autobus FROM autobuses a WHERE a.id = @autobus_id";
 
                 var resultado = await conexion.QueryAsync<Autobus>(sentenciaSQL,
                                     parametrosSentencia);
