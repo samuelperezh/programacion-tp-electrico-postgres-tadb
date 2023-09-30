@@ -21,11 +21,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
         {
             using (var conexion = contextoDB.CreateConnection())
             {
-                string sentenciaSQL = "SELECT c.id, c.nombre, c.sitio_web, c.instagram, " +
-                                      "(u.municipio || ', ' || u.departamento) ubicacion, c.ubicacion_id " +
-                                      "FROM cervecerias c JOIN ubicaciones u " +
-                                      "ON c.ubicacion_id = u.id " +
-                                      "ORDER BY c.id DESC";
+                string sentenciaSQL = "SELECT id, autobus FROM autobuses ORDER BY id DESC";
 
                 var resultadoAutobuses = await conexion.QueryAsync<Autobus>(sentenciaSQL,
                                         new DynamicParameters());
@@ -44,10 +40,29 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                 parametrosSentencia.Add("@autobus_id", autobus_id,
                                         DbType.Int32, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT c.id, c.nombre, c.sitio_web, c.instagram, " +
-                                      "(u.municipio || ', ' || u.departamento) ubicacion, c.ubicacion_id " +
-                                      "FROM cervecerias c JOIN ubicaciones u ON c.ubicacion_id = u.id " +
-                                      "WHERE c.id = @cerveceria_id ";
+                string sentenciaSQL = "SELECT id, autobus FROM autobuses WHERE id = @autobus_id";
+
+                var resultado = await conexion.QueryAsync<Autobus>(sentenciaSQL,
+                                    parametrosSentencia);
+
+                if (resultado.Count() > 0)
+                    unAutobus = resultado.First();
+            }
+
+            return unAutobus;
+        }
+
+        public async Task<Autobus> GetByNameAsync(string autobus_nombre)
+        {
+            Autobus unAutobus = new Autobus();
+
+            using (var conexion = contextoDB.CreateConnection())
+            {
+                DynamicParameters parametrosSentencia = new DynamicParameters();
+                parametrosSentencia.Add("@autobus_nombre", autobus_nombre,
+                                        DbType.String, ParameterDirection.Input);
+
+                string sentenciaSQL = "SELECT id, autobus FROM autobuses WHERE LOWER(autobus) = LOWER(@autobus_nombre)";
 
                 var resultado = await conexion.QueryAsync<Autobus>(sentenciaSQL,
                                     parametrosSentencia);
@@ -67,7 +82,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             {
                 using (var conexion = contextoDB.CreateConnection())
                 {
-                    string procedimiento = "core.p_inserta_cargador";
+                    string procedimiento = "core.p_inserta_autobus";
                     var parametros = new
                     {
                         p_nombre = unAutobus.Nombre
@@ -98,7 +113,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             {
                 using (var conexion = contextoDB.CreateConnection())
                 {
-                    string procedimiento = "core.p_actualiza_cerveza";
+                    string procedimiento = "core.p_actualiza_autobus";
                     var parametros = new
                     {
                         p_id = unAutobus.Id,
@@ -131,7 +146,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             {
                 using (var conexion = contextoDB.CreateConnection())
                 {
-                    string procedimiento = "core.p_elimina_cerveza";
+                    string procedimiento = "core.p_elimina_autobus";
                     var parametros = new
                     {
                         p_id = unAutobus.Id,
