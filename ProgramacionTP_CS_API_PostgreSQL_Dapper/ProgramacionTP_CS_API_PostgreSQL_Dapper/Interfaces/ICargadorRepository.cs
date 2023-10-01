@@ -7,8 +7,9 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Interfaces
         public Task<IEnumerable<Cargador>> GetAllAsync();
         public Task<Cargador> GetByIdAsync(int cargador_id);
         public Task<Cargador> GetByNameAsync(string cargador_nombre);
-        public Task<bool> CreateAsync(Cargador cargador);
-        public Task<bool> UpdateAsync(Cargador cargador);
-        public Task<bool> DeleteAsync(Cargador cargador);
+        public Task<int> GetTotalAssociatedChargersAsync(int cargador_id);
+        public Task<bool> CreateAsync(Cargador unCargador);
+        public Task<bool> UpdateAsync(Cargador unCargador);
+        public Task<bool> DeleteAsync(Cargador unCargador);
     }
 }

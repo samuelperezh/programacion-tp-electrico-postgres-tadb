@@ -150,7 +150,6 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                     var parametros = new
                     {
                         p_id = unAutobus.Id,
-                        p_nombre = unAutobus.Nombre
                     };
 
                     var cantidad_filas = await conexion.ExecuteAsync(

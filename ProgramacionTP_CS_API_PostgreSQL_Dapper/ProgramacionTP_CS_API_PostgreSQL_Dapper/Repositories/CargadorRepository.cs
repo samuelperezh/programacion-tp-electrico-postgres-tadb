@@ -74,6 +74,24 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             return unCargador;
         }
 
+        public async Task<int> GetTotalAssociatedChargersAsync(int cargador_id)
+        {
+            using (var conexion = contextoDB.CreateConnection())
+            {
+                DynamicParameters parametrosSentencia = new DynamicParameters();
+                parametrosSentencia.Add("@cargador_id", cargador_id,
+                                        DbType.Int32, ParameterDirection.Input);
+
+                string sentenciaSQL = "SELECT COUNT(id) totalCargadores " +
+                                      "FROM cargadores " +
+                                      "WHERE cargador_id = @cargador_id ";
+
+                var totalCargadores = await conexion.QueryFirstAsync<int>(sentenciaSQL,
+                                        parametrosSentencia);
+
+                return totalCargadores;
+            }
+        }
 
         public async Task<bool> CreateAsync(Cargador unCargador)
         {
@@ -151,7 +169,6 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                     var parametros = new
                     {
                         p_id = unCargador.Id,
-                        p_nombre = unCargador.Nombre
                     };
 
                     var cantidad_filas = await conexion.ExecuteAsync(

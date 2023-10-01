@@ -6,48 +6,48 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
 {
     public class CargadorService
     {
-        private readonly ICargadorRepository _CargadorRepository;
+        private readonly ICargadorRepository _cargadorRepository;
 
-        public CargadorService(ICargadorRepository CargadorRepository)
+        public CargadorService(ICargadorRepository cargadorRepository)
         {
-            _CargadorRepository = CargadorRepository;
+            _cargadorRepository = cargadorRepository;
         }
 
         public async Task<IEnumerable<Cargador>> GetAllAsync()
         {
-            return await _CargadorRepository
+            return await _cargadorRepository
                 .GetAllAsync();
         }
 
-        public async Task<Cargador> GetByIdAsync(int Cargador_id)
+        public async Task<Cargador> GetByIdAsync(int cargador_id)
         {
-            //Validamos que el cargador exista con ese Id
-            var unCargador = await _CargadorRepository
-                .GetByIdAsync(Cargador_id);
+            // Validamos que el cargador exista con ese Id
+            var unCargador = await _cargadorRepository
+                .GetByIdAsync(cargador_id);
 
             if (unCargador.Id == 0)
-                throw new AppValidationException($"Cargador no encontrado con el id {Cargador_id}");
+                throw new AppValidationException($"Cargador no encontrado con el id {cargador_id}");
 
             return unCargador;
         }
 
         public async Task<Cargador> CreateAsync(Cargador unCargador)
         {
-            //Validamos que el nombre no exista previamente
-            var CargadorExistente = await _CargadorRepository
+            // Validamos que el nombre no exista previamente
+            var cargadorExistente = await _cargadorRepository
                 .GetByNameAsync(unCargador.Nombre);
 
-            if (CargadorExistente.Id != 0)
-                throw new AppValidationException($"Ya existe un cargador con el nombre {CargadorExistente.Nombre}");
+            if (cargadorExistente.Id != 0)
+                throw new AppValidationException($"Ya existe un cargador con el nombre {cargadorExistente.Nombre}");
             try
             {
-                bool resultadoAccion = await _CargadorRepository
+                bool resultadoAccion = await _cargadorRepository
                     .CreateAsync(unCargador);
 
                 if (!resultadoAccion)
                     throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
 
-                unCargador = await _CargadorRepository
+                unCargador = await _cargadorRepository
                     .GetByNameAsync(unCargador.Nombre!);
             }
             catch (DbOperationException error)
@@ -55,47 +55,47 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                 throw error;
             }
 
-            return CargadorExistente;
+            return cargadorExistente;
         }
 
-        public async Task<Cargador> UpdateAsync(int Cargador_id, Cargador unCargador)
+        public async Task<Cargador> UpdateAsync(int cargador_id, Cargador unCargador)
         {
-            //Validamos que los parametros sean consistentes
-            if (Cargador_id != unCargador.Id)
+            // Validamos que los parametros sean consistentes
+            if (cargador_id != unCargador.Id)
                 throw new AppValidationException($"Inconsistencia en el Id del cargador a actualizar. Verifica argumentos");
 
-            //Validamos que el cargador exista con ese Id
-            var CargadorExistente = await _CargadorRepository
-                .GetByIdAsync(Cargador_id);
+            // Validamos que el cargador exista con ese Id
+            var cargadorExistente = await _cargadorRepository
+                .GetByIdAsync(cargador_id);
 
-            if (CargadorExistente.Id == 0)
-                throw new AppValidationException($"No existe un Cargador registrado con el id {unCargador.Id}");
+            if (cargadorExistente.Id == 0)
+                throw new AppValidationException($"No existe un cargador registrado con el id {unCargador.Id}");
 
-            //Validamos que la Autobus tenga nombre
+            // Validamos que el cargador tenga nombre
             if (unCargador.Nombre.Length == 0)
-                throw new AppValidationException("No se puede actualizar un Cargador con nombre nulo");
+                throw new AppValidationException("No se puede actualizar un cargador con nombre nulo");
 
-            //Validamos que el nombre no exista previamente en otro Cargador diferente a la que se está actualizando
-            CargadorExistente = await _CargadorRepository
+            // Validamos que el nombre no exista previamente en otro Cargador diferente a la que se está actualizando
+            cargadorExistente = await _cargadorRepository
                 .GetByNameAsync(unCargador.Nombre);
 
-            if (unCargador.Id != CargadorExistente.Id)
+            if (unCargador.Id != cargadorExistente.Id)
                 throw new AppValidationException($"Ya existe otro autobus con el nombre {unCargador.Nombre}. " +
                     $"No se puede Actualizar");
 
-            //Validamos que haya al menos un cambio en las propiedades
-            if (unCargador.Equals(CargadorExistente))
-                throw new AppValidationException("No hay cambios en los atributos del Cargador. No se realiza actualización.");
+            // Validamos que haya al menos un cambio en las propiedades
+            if (unCargador.Equals(cargadorExistente))
+                throw new AppValidationException("No hay cambios en los atributos del cargador. No se realiza actualización.");
 
             try
             {
-                bool resultadoAccion = await _CargadorRepository
+                bool resultadoAccion = await _cargadorRepository
                     .UpdateAsync(unCargador);
 
                 if (!resultadoAccion)
                     throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
 
-                CargadorExistente = await _CargadorRepository
+                cargadorExistente = await _cargadorRepository
                     .GetByNameAsync(unCargador.Nombre!);
             }
             catch (DbOperationException error)
@@ -103,23 +103,31 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                 throw error;
             }
 
-            return CargadorExistente;
+            return cargadorExistente;
         }
 
-        public async Task DeleteAsync(int Cargador_id)
+        public async Task DeleteAsync(int cargador_id)
         {
-            // validamos que el Cargador a eliminar si exista con ese Id
-            var CargadorExistente = await _CargadorRepository
-                .GetByIdAsync(Cargador_id);
+            // Validamos que el cargador a eliminar si exista con ese Id
+            var cargadorExistente = await _cargadorRepository
+                .GetByIdAsync(cargador_id);
 
-            if (CargadorExistente.Id == 0)
-                throw new AppValidationException($"No existe un Cargador con el Id {Cargador_id} que se pueda eliminar");
+            if (cargadorExistente.Id == 0)
+                throw new AppValidationException($"No existe un cargador con el Id {cargador_id} que se pueda eliminar");
 
-            //Si existe se puede eliminar
+            // Validamos que el cargador no tenga asociadas utilizaciones
+            var cantidadCargadoresAsociados = await _cargadorRepository
+                .GetTotalAssociatedChargersAsync(cargadorExistente.Id);
+
+            if (cantidadCargadoresAsociados > 0)
+                throw new AppValidationException($"Existen {cantidadCargadoresAsociados} cargadores " +
+                    $"asociados a {cargadorExistente.Nombre}. No se puede eliminar");
+
+            // Si existe se puede eliminar
             try
             {
-                bool resultadoAccion = await _CargadorRepository
-                    .DeleteAsync(CargadorExistente);
+                bool resultadoAccion = await _cargadorRepository
+                    .DeleteAsync(cargadorExistente);
 
                 if (!resultadoAccion)
                     throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
