@@ -35,7 +35,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                 if (!resultadoAccion)
                     throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
 
-                unaOperacionAutobus = await _OperacionAutobusRepository
+                unaOperacionAutobus = await _OperacionAutobusRepository;
                     //.GetByNameAsync(unCargador.Nombre!);
             }
             catch (DbOperationException error)
