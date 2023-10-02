@@ -60,7 +60,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
 
         public async Task<Cargador> UpdateAsync(int cargador_id, Cargador unCargador)
         {
-            // Validamos que los parametros sean consistentes
+            // Validamos que los parámetros sean consistentes
             if (cargador_id != unCargador.Id)
                 throw new AppValidationException($"Inconsistencia en el Id del cargador a actualizar. Verifica argumentos");
 
@@ -75,7 +75,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             if (unCargador.Nombre.Length == 0)
                 throw new AppValidationException("No se puede actualizar un cargador con nombre nulo");
 
-            // Validamos que el nombre no exista previamente en otro Cargador diferente a la que se está actualizando
+            // Validamos que el nombre no exista previamente en otro cargador diferente al que se está actualizando
             cargadorExistente = await _cargadorRepository
                 .GetByNameAsync(unCargador.Nombre);
 
@@ -116,14 +116,14 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                 throw new AppValidationException($"No existe un cargador con el Id {cargador_id} que se pueda eliminar");
 
             // Validamos que el cargador no tenga asociadas utilizaciones
-            var cantidadCargadoresAsociados = await _cargadorRepository
-                .GetTotalAssociatedChargersAsync(cargadorExistente.Id);
+            var cantidadUtilizacionesAsociados = await _cargadorRepository
+                .GetTotalAssociatedChargerUtilizationAsync(cargadorExistente.Id);
 
-            if (cantidadCargadoresAsociados > 0)
-                throw new AppValidationException($"Existen {cantidadCargadoresAsociados} cargadores " +
+            if (cantidadUtilizacionesAsociados > 0)
+                throw new AppValidationException($"Existen {cantidadUtilizacionesAsociados} cargadores " +
                     $"asociados a {cargadorExistente.Nombre}. No se puede eliminar");
 
-            // Si existe se puede eliminar
+            // Si existe y no tiene utilizaciones asociadas, se puede eliminar
             try
             {
                 bool resultadoAccion = await _cargadorRepository

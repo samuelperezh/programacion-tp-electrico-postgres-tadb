@@ -74,7 +74,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             return unCargador;
         }
 
-        public async Task<int> GetTotalAssociatedChargersAsync(int cargador_id)
+        public async Task<int> GetTotalAssociatedChargerUtilizationAsync(int cargador_id)
         {
             using (var conexion = contextoDB.CreateConnection())
             {
@@ -82,14 +82,14 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                 parametrosSentencia.Add("@cargador_id", cargador_id,
                                         DbType.Int32, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT COUNT(id) totalCargadores " +
-                                      "FROM cargadores " +
+                string sentenciaSQL = "SELECT COUNT(id) totalUtilizaciones " +
+                                      "FROM utilizacion_cargadores " +
                                       "WHERE cargador_id = @cargador_id ";
 
-                var totalCargadores = await conexion.QueryFirstAsync<int>(sentenciaSQL,
+                var totalUtilizaciones = await conexion.QueryFirstAsync<int>(sentenciaSQL,
                                         parametrosSentencia);
 
-                return totalCargadores;
+                return totalUtilizaciones;
             }
         }
 

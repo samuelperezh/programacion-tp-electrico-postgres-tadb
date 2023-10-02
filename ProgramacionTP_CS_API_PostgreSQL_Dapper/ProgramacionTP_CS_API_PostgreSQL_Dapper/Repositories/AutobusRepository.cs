@@ -74,6 +74,44 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             return unAutobus;
         }
 
+        public async Task<int> GetTotalAssociatedChargerUtilizationAsync(int autobus_id)
+        {
+            using (var conexion = contextoDB.CreateConnection())
+            {
+                DynamicParameters parametrosSentencia = new DynamicParameters();
+                parametrosSentencia.Add("@autobus_id", autobus_id,
+                                        DbType.Int32, ParameterDirection.Input);
+
+                string sentenciaSQL = "SELECT COUNT(id) totalUtilizaciones " +
+                                      "FROM utilizacion_cargadores " +
+                                      "WHERE autobus_id = @autobus_id ";
+
+                var totalUtilizaciones = await conexion.QueryFirstAsync<int>(sentenciaSQL,
+                                        parametrosSentencia);
+
+                return totalUtilizaciones;
+            }
+        }
+
+        public async Task<int> GetTotalAssociatedAutobusOperationAsync(int autobus_id)
+        {
+            using (var conexion = contextoDB.CreateConnection())
+            {
+                DynamicParameters parametrosSentencia = new DynamicParameters();
+                parametrosSentencia.Add("@autobus_id", autobus_id,
+                                        DbType.Int32, ParameterDirection.Input);
+
+                string sentenciaSQL = "SELECT COUNT(id) totalOperaciones " +
+                                      "FROM operacion_autobuses " +
+                                      "WHERE autobus_id = @autobus_id ";
+
+                var totalOperaciones = await conexion.QueryFirstAsync<int>(sentenciaSQL,
+                                        parametrosSentencia);
+
+                return totalOperaciones;
+            }
+        }
+
         public async Task<bool> CreateAsync(Autobus unAutobus)
         {
             bool resultadoAccion = false;
