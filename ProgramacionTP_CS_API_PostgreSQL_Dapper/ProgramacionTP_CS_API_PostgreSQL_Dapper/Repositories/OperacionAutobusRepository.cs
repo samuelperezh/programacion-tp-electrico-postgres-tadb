@@ -7,126 +7,125 @@ using Npgsql;
 using System.Data;
 
 namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
+{
+    public class OperacionAutobusRepository : IOperacionAutobusRepository
     {
-        public class OperacionAutobusRepository : IOperacionAutobusRepository
-    {
-            private readonly PgsqlDbContext contextoDB;
+        private readonly PgsqlDbContext contextoDB;
 
-            public OperacionAutobusRepository(PgsqlDbContext unContexto)
+        public OperacionAutobusRepository(PgsqlDbContext unContexto)
+        {
+            contextoDB = unContexto;
+        }
+
+        public async Task<IEnumerable<OperacionAutobus>> GetAllAsync()
+        {
+            using (var conexion = contextoDB.CreateConnection())
             {
-                contextoDB = unContexto;
-            }
+                string sentenciaSQL = "SELECT autobus_id, horario_id"+
+                                      "FROM operacion_autobuses" +
+                                      "ORDER BY autobus_id DESC, horario_id DESC";
 
-            public async Task<IEnumerable<OperacionAutobus>> GetAllAsync()
+                var resultadoOperacionAutobuses = await conexion.QueryAsync<OperacionAutobus>(sentenciaSQL,
+                                        new DynamicParameters());
+
+                return resultadoOperacionAutobuses;
+            }
+        }
+
+        public async Task<bool> CreateAsync(OperacionAutobus unaOperacionAutobus)
+        {
+            bool resultadoAccion = false;
+
+            try
             {
                 using (var conexion = contextoDB.CreateConnection())
                 {
-                    string sentenciaSQL = "SELECT autobus_id, horario_id"+
-                                           "FROM operacion_autobuses" +
-                                            "ORDER BY autobus_id DESC, horario_id DESC";
-
-                    var resultadoOperacionAutobuses = await conexion.QueryAsync<OperacionAutobus>(sentenciaSQL,
-                                            new DynamicParameters());
-
-                    return resultadoOperacionAutobuses;
-                }
-            }
-
-        public async Task<bool> CreateAsync(OperacionAutobus unaOperacionAutobus)
-            {
-                bool resultadoAccion = false;
-
-                try
-                {
-                    using (var conexion = contextoDB.CreateConnection())
+                    string procedimiento = "p_inserta_operacion_autobus";
+                    var parametros = new
                     {
-                        string procedimiento = "core.p_inserta_operacionAutobus";
-                        var parametros = new
-                        {
-                            p_autobusId = unaOperacionAutobus.AutobusId,
-                            p_horarioId = unaOperacionAutobus.HorarioId
-                        };
+                        p_autobus_id = unaOperacionAutobus.Autobus_id,
+                        p_horario_id = unaOperacionAutobus.Horario_id
+                    };
 
-                        var cantidad_filas = await conexion.ExecuteAsync(
-                            procedimiento,
-                            parametros,
-                            commandType: CommandType.StoredProcedure);
+                    var cantidad_filas = await conexion.ExecuteAsync(
+                        procedimiento,
+                        parametros,
+                        commandType: CommandType.StoredProcedure);
 
-                        if (cantidad_filas != 0)
-                            resultadoAccion = true;
-                    }
+                    if (cantidad_filas != 0)
+                        resultadoAccion = true;
                 }
-                catch (NpgsqlException error)
-                {
-                    throw new DbOperationException(error.Message);
-                }
-
-                return resultadoAccion;
             }
-
-            public async Task<bool> UpdateAsync(OperacionAutobus unaOperacionAutobus)
+            catch (NpgsqlException error)
             {
-                bool resultadoAccion = false;
-
-                try
-                {
-                    using (var conexion = contextoDB.CreateConnection())
-                    {
-                        string procedimiento = "core.p_actualiza_operacionAutobus";
-                        var parametros = new
-                        {
-                            p_autobusId = unaOperacionAutobus.AutobusId,
-                            p_horarioId = unaOperacionAutobus.HorarioId
-
-                        };
-
-                        var cantidad_filas = await conexion.ExecuteAsync(
-                            procedimiento,
-                            parametros,
-                            commandType: CommandType.StoredProcedure);
-
-                        if (cantidad_filas != 0)
-                            resultadoAccion = true;
-                    }
-                }
-                catch (NpgsqlException error)
-                {
-                    throw new DbOperationException(error.Message);
-                }
-
-                return resultadoAccion;
+                throw new DbOperationException(error.Message);
             }
 
-            public async Task<bool> DeleteAsync(OperacionAutobus unaOperacionAutobus)
+            return resultadoAccion;
+        }
+
+        public async Task<bool> UpdateAsync(OperacionAutobus unaOperacionAutobus)
+        {
+            bool resultadoAccion = false;
+
+            try
             {
-                bool resultadoAccion = false;
-
-                try
+                using (var conexion = contextoDB.CreateConnection())
                 {
-                    using (var conexion = contextoDB.CreateConnection())
+                    string procedimiento = "p_actualiza_operacion_autobus";
+                    var parametros = new
                     {
-                        string procedimiento = "core.p_elimina_unaOperacionAutobus";
-                        var parametros = new
-                        {
-                            p_autobusId = unaOperacionAutobus.AutobusId,
-                            p_horarioId = unaOperacionAutobus.HorarioId
-                        };
+                        p_autobus_id = unaOperacionAutobus.Autobus_id,
+                        p_horario_id = unaOperacionAutobus.Horario_id
+                    };
 
-                        var cantidad_filas = await conexion.ExecuteAsync(
-                            procedimiento,
-                            parametros,
-                            commandType: CommandType.StoredProcedure);
+                    var cantidad_filas = await conexion.ExecuteAsync(
+                        procedimiento,
+                        parametros,
+                        commandType: CommandType.StoredProcedure);
 
-                        if (cantidad_filas != 0)
-                            resultadoAccion = true;
-                    }
+                    if (cantidad_filas != 0)
+                        resultadoAccion = true;
                 }
-                catch (NpgsqlException error)
-                {
-                    throw new DbOperationException(error.Message);
-                }
-
-                return resultadoAccion;
             }
+            catch (NpgsqlException error)
+            {
+                throw new DbOperationException(error.Message);
+            }
+
+            return resultadoAccion;
+        }
+
+        public async Task<bool> DeleteAsync(OperacionAutobus unaOperacionAutobus)
+        {
+            bool resultadoAccion = false;
+
+            try
+            {
+                using (var conexion = contextoDB.CreateConnection())
+                {
+                    string procedimiento = "p_elimina_operacion_autobus";
+                    var parametros = new
+                    {
+                        p_autobus_id = unaOperacionAutobus.Autobus_id,
+                        p_horario_id = unaOperacionAutobus.Horario_id
+                    };
+
+                    var cantidad_filas = await conexion.ExecuteAsync(
+                        procedimiento,
+                        parametros,
+                        commandType: CommandType.StoredProcedure);
+
+                    if (cantidad_filas != 0)
+                        resultadoAccion = true;
+                }
+            }
+            catch (NpgsqlException error)
+            {
+                throw new DbOperationException(error.Message);
+            }
+
+            return resultadoAccion;
         }
     }
+}

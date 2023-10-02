@@ -101,7 +101,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             {
                 using (var conexion = contextoDB.CreateConnection())
                 {
-                    string procedimiento = "core.p_inserta_cargador";
+                    string procedimiento = "p_inserta_cargador";
                     var parametros = new
                     {
                         p_nombre = unCargador.Nombre
@@ -132,7 +132,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             {
                 using (var conexion = contextoDB.CreateConnection())
                 {
-                    string procedimiento = "core.p_actualiza_cargador";
+                    string procedimiento = "p_actualiza_cargador";
                     var parametros = new
                     {
                         p_id = unCargador.Id,
@@ -165,7 +165,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             {
                 using (var conexion = contextoDB.CreateConnection())
                 {
-                    string procedimiento = "core.p_elimina_cargador";
+                    string procedimiento = "p_elimina_cargador";
                     var parametros = new
                     {
                         p_id = unCargador.Id,

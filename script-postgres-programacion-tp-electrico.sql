@@ -204,3 +204,91 @@ as $$
         where id = p_id;
     end;
 $$;
+
+-- ------------------------------------------------------
+-- Procedimientos relacionados con la tabla utilizacion_cargadores
+-- ------------------------------------------------------
+
+-- Inserción: p_inserta_utilizacion_cargador
+create or replace procedure p_inserta_utilizacion_cargador(
+    p_cargador_id int,
+    p_autobus_id int,
+    p_horario_id int
+)
+language plpgsql
+as $$
+    begin
+        insert into utilizacion_cargadores (cargador_id, autobus_id, horario_id)
+        values (p_cargador_id, p_autobus_id, p_horario_id);
+    end;
+$$;
+
+-- Actualización: p_actualiza_utilizacion_cargador
+create or replace procedure p_actualiza_utilizacion_cargador(
+    p_cargador_id int,
+    p_autobus_id int,
+    p_horario_id int
+)
+language plpgsql
+as $$
+    begin
+        update utilizacion_cargadores
+        set horario_id = p_horario_id
+        where cargador_id = p_cargador_id and autobus_id = p_autobus_id;
+    end;
+$$;
+
+-- Eliminación: p_elimina_utilizacion_cargador
+create or replace procedure p_elimina_utilizacion_cargador(
+    p_horario_id int
+)
+language plpgsql
+as $$
+    begin
+        delete from utilizacion_cargadores
+        where horario_id = p_horario_id;
+    end;
+$$;
+
+-- ------------------------------------------------------
+-- Procedimientos relacionados con la tabla operacion_autobuses
+-- ------------------------------------------------------
+
+-- Inserción: p_inserta_operacion_autobus 
+create or replace procedure p_inserta_operacion_autobus(
+    p_autobus_id int,
+    p_horario_id int
+)
+language plpgsql
+as $$
+    begin
+        insert into operacion_autobuses (autobus_id, horario_id)
+        values (p_autobus_id, p_horario_id);
+    end;
+$$;
+
+-- Actualización: p_actualiza_operacion_autobus
+create or replace procedure p_actualiza_operacion_autobus(
+    p_autobus_id int,
+    p_horario_id int
+)
+language plpgsql
+as $$
+    begin
+        update operacion_autobuses
+        set horario_id = p_horario_id
+        where autobus_id = p_autobus_id;
+    end;
+$$;
+
+-- Eliminación: p_elimina_operacion_autobus
+create or replace procedure p_elimina_operacion_autobus(
+    p_horario_id int
+)
+language plpgsql
+as $$
+    begin
+        delete from operacion_autobuses
+        where horario_id = p_horario_id;
+    end;
+$$;

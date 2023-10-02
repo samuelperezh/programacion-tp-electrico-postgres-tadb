@@ -2,8 +2,8 @@
 {
     public class OperacionAutobus
     {
-        public int AutobusId { get; set; } = 0;
-        public int HorarioId { get; set; } = 0;
+        public int Autobus_id { get; set; } = 0;
+        public int Horario_id { get; set; } = 0;
 
         public override bool Equals(object? obj)
         {
@@ -12,8 +12,8 @@
 
             var otraOperacionAutobus = (OperacionAutobus)obj;
 
-            return AutobusId == otraOperacionAutobus.AutobusId
-                && HorarioId == otraOperacionAutobus.HorarioId;
+            return Autobus_id == otraOperacionAutobus.Autobus_id
+                && Horario_id == otraOperacionAutobus.Horario_id;
         }
 
         public override int GetHashCode()
@@ -21,8 +21,8 @@
             unchecked
             {
                 int hash = 3;
-                hash = hash * 5 + AutobusId.GetHashCode();
-                hash = hash * 5 + HorarioId.GetHashCode();
+                hash = hash * 5 + Autobus_id.GetHashCode();
+                hash = hash * 5 + Horario_id.GetHashCode();
 
                 return hash;
             }
