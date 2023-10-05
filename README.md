@@ -6,6 +6,12 @@ Universidad Pontificia Bolivariana
 ## 👩🏻‍💻 Luisa Maria Flórez Múnera https://github.com/luisaflorezm 👩🏻‍💻 
 ## 🧑🏻‍💻 Samuel Pérez Hurtado https://github.com/samuelperezh 🧑🏻‍💻
 
+## Dominio de problema
+La Secretaría de Movilidad del Municipio de Medellín en conjunto con la Empresa de Transporte Masivo
+del Valle de Aburrá están realizando un estudio sobre la programación de la utilización y mantenimiento
+de los buses eléctricos de tal manera que se pueda realizar una sustitución progresiva cumpliendo los
+requerimientos mínimos de operación del servicio.
+
 ## Instructivo de compilación y ejecución de la solución del proyecto
 ## API
 ### [ProgramacionTP_CS_API_PostgreSQL_Dapper](https://github.com/samuelperezh/tadb_202320_ex03/tree/main/ProgramacionTP_CS_API_PostgreSQL_Dapper/ProgramacionTP_CS_API_PostgreSQL_Dapper)
