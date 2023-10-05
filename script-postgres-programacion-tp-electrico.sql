@@ -255,15 +255,23 @@ $$;
 -- ------------------------------------------------------
 
 -- Inserción: p_inserta_operacion_autobus 
-create or replace procedure p_inserta_operacion_autobus(
-    p_autobus_id int,
-    p_horario_id int
-)
-language plpgsql
-as $$
+create or replace procedure core.p_inserta_operacion_autobus(
+                    in p_autobus_id integer,
+                    in p_horario_id integer)
+    language plpgsql
+as
+$$
+    declare
+    l_autobus_operacion_id integer;
+
     begin
+        -- Insertamos la operación de autobús
         insert into operacion_autobuses (autobus_id, horario_id)
         values (p_autobus_id, p_horario_id);
+
+        -- Insertamos la indicación de que el autobús está operando en horario pico
+        insert into horarios (id, horario_pico)
+        values (p_horario_id, true);
     end;
 $$;
 
