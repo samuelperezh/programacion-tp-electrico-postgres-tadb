@@ -3,6 +3,6 @@
     public class Horario
     {
         public int Id { get; set; } = 0;
-        public string HorarioPico { get; set; } = string.Empty;
+        public bool HorarioPico { get; set; } = false;
     }
 }

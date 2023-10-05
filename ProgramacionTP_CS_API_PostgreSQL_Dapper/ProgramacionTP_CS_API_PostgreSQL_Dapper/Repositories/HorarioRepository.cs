@@ -40,7 +40,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                 parametrosSentencia.Add("@horario_id", horario_id,
                                         DbType.Int32, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT h.id, h.horario_pico FROM horarios WHERE h.id = @horario_id ";
+                string sentenciaSQL = "SELECT h.id, h.horario_pico FROM horarios h WHERE h.id = @horario_id ";
 
                 var resultado = await conexion.QueryAsync<Horario>(sentenciaSQL,
                                     parametrosSentencia);

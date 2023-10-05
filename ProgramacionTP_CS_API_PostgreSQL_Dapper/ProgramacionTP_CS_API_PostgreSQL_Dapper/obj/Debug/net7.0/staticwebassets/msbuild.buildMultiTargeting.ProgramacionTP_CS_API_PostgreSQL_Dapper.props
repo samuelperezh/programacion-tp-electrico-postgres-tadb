@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\ProgramacionTP_CS_API_PostgreSQL_Dapper.props" />
+</Project>
