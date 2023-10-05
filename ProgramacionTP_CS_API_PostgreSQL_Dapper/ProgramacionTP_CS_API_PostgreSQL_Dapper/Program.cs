@@ -14,15 +14,15 @@ builder.Services.AddSingleton<PgsqlDbContext>();
 builder.Services.AddScoped<IAutobusRepository, AutobusRepository>();
 builder.Services.AddScoped<ICargadorRepository, CargadorRepository>();
 builder.Services.AddScoped<IHorarioRepository, HorarioRepository>();
-builder.Services.AddScoped<IOperacionAutobusRepository, OperacionAutobusRepository>();
-builder.Services.AddScoped<IUtilizacionCargadorRepository, UtilizacionCargadorRepository>();
+//builder.Services.AddScoped<IOperacionAutobusRepository, OperacionAutobusRepository>();
+//builder.Services.AddScoped<IUtilizacionCargadorRepository, UtilizacionCargadorRepository>();
 
 //Aqui agregamos los servicios asociados para cada EndPoint
 builder.Services.AddScoped<AutobusService>();
 builder.Services.AddScoped<CargadorService>();
 builder.Services.AddScoped<HorarioService>();
-builder.Services.AddScoped<OperacionAutobusService>();
-builder.Services.AddScoped<UtilizacionCargadorService>();
+//builder.Services.AddScoped<OperacionAutobusService>();
+//builder.Services.AddScoped<UtilizacionCargadorService>();
 
 // Add services to the container.
 builder.Services.AddControllers()

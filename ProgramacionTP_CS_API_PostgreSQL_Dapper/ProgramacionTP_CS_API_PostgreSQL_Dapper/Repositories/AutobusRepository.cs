@@ -143,6 +143,44 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             return resultadoAccion;
         }
 
+        public async Task<bool> CreateAllPicoOperationAsync(Autobus unAutobus)
+        {
+            bool resultadoAccion = false;
+
+            try
+            {
+                using (var conexion = contextoDB.CreateConnection())
+                {
+                    List<int> horas_pico = new List<int> { 5, 6, 7, 8, 9, 16, 17, 18, 19, 20 };
+                    var cantidad_filas = 0;
+
+                    for (int i = 0; i < horas_pico.Count; i++)
+                    {
+                        string procedimiento = "p_inserta_operacion_autobus";
+                        var parametros = new
+                        {
+                            p_autobus_id = unAutobus.Id,
+                            p_horario_id = horas_pico[i]
+                        };
+
+                        cantidad_filas += await conexion.ExecuteAsync(
+                            procedimiento,
+                            parametros,
+                            commandType: CommandType.StoredProcedure);
+                    }
+
+                    if (cantidad_filas != 0)
+                        resultadoAccion = true;
+                }
+            }
+            catch (NpgsqlException error)
+            {
+                throw new DbOperationException(error.Message);
+            }
+
+            return resultadoAccion;
+        }
+
         public async Task<bool> UpdateAsync(Autobus unAutobus)
         {
             bool resultadoAccion = false;

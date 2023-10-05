@@ -50,6 +50,8 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
 
                 unAutobus = await _autobusRepository
                     .GetByNameAsync(unAutobus.Nombre!);
+
+                await _autobusRepository.CreateAllPicoOperationAsync(unAutobus);
             }
             catch (DbOperationException error)
             {

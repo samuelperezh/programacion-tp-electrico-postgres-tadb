@@ -7,9 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\OperacionAutobusesController.cs" />
+    <Compile Remove="Controllers\UtilizacionCargadoresController.cs" />
+    <Compile Remove="Interfaces\IOperacionAutobusRepository.cs" />
+    <Compile Remove="Interfaces\IUtilizacionCargadorRepository.cs" />
     <Compile Remove="Models\Autobuses.cs" />
+    <Compile Remove="Models\OperacionAutobus.cs" />
     <Compile Remove="Models\OperacionAutobuses.cs" />
+    <Compile Remove="Models\UtilizacionCargador.cs" />
     <Compile Remove="Models\UtilizacionCargadores.cs" />
+    <Compile Remove="Repositories\OperacionAutobusRepository.cs" />
+    <Compile Remove="Repositories\UtilizacionCargadorRepository.cs" />
+    <Compile Remove="Services\OperacionAutobusService.cs" />
+    <Compile Remove="Services\UtilizacionCargadorService.cs" />
   </ItemGroup>
 
   <ItemGroup>
