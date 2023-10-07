@@ -126,16 +126,22 @@ $$;
 
 -- Inserción: p_inserta_autobus
 -- Cada vez que se inserte un autobus, se debe poner a operar en horario pico
--- create or replace procedure p_inserta_autobus(
---     p_autobus varchar(10)
--- )
--- language plpgsql
--- as $$
---     begin
---         insert into autobuses (autobus)
---         values (p_autobus);
---     end;
--- $$;
+create or replace procedure p_inserta_autobus(
+    p_autobus varchar(10)
+)
+language plpgsql
+as $$
+    begin
+        insert into autobuses (autobus)
+        values (p_autobus);
+
+        insert into operacion_autobuses (autobus_id, horario_id)
+        values (
+            select autobus_id id, horario_id
+            from horario
+        )
+    end;
+$$;
 
 -- Actualización: p_actualiza_autobus
 create or replace procedure p_actualiza_autobus(
