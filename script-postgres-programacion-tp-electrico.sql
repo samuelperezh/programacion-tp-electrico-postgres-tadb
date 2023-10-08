@@ -139,9 +139,11 @@ as $$
         values (
             select autobus_id id, horario_id
             from horario
-        )
+            where horario_pico = true
+        );
     end;
 $$;
+
 
 -- Actualización: p_actualiza_autobus
 create or replace procedure p_actualiza_autobus(
