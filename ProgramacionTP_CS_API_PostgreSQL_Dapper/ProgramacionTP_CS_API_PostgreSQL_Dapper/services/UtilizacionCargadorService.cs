@@ -144,7 +144,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             try
             {
                 bool resultadoAccion = await _utilizacionCargadorRepository
-                    .DeleteAsync(unaUtilizacionCargador);
+                    .DeleteAsync(utilizacionCargadorExistente);
 
                 if (!resultadoAccion)
                     throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
