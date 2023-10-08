@@ -52,17 +52,17 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             return unCargador;
         }
 
-        public async Task<Cargador> GetByNameAsync(string cargador_nombre)
+        public async Task<Cargador> GetByNameAsync(string nombre_cargador)
         {
             Cargador unCargador = new Cargador();
 
             using (var conexion = contextoDB.CreateConnection())
             {
                 DynamicParameters parametrosSentencia = new DynamicParameters();
-                parametrosSentencia.Add("@cargador_nombre", cargador_nombre,
+                parametrosSentencia.Add("@nombre_cargador", nombre_cargador,
                                         DbType.String, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT c.id, c.cargador FROM cargadores c WHERE LOWER(c.cargador) = LOWER(@cargador_nombre)";
+                string sentenciaSQL = "SELECT c.id, c.cargador FROM cargadores c WHERE LOWER(c.cargador) = LOWER(@nombre_cargador)";
 
                 var resultado = await conexion.QueryAsync<Cargador>(sentenciaSQL,
                                     parametrosSentencia);
@@ -104,7 +104,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                     string procedimiento = "p_inserta_cargador";
                     var parametros = new
                     {
-                        p_nombre = unCargador.Nombre
+                        p_nombre = unCargador.Nombre_cargador
                     };
 
                     var cantidad_filas = await conexion.ExecuteAsync(
@@ -136,7 +136,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                     var parametros = new
                     {
                         p_id = unCargador.Id,
-                        p_nombre = unCargador.Nombre
+                        p_nombre = unCargador.Nombre_cargador
 
                     };
 

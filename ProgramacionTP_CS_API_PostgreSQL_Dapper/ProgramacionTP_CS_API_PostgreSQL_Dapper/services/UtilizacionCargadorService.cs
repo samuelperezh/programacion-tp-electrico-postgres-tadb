@@ -7,108 +7,144 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
 {
     public class UtilizacionCargadorService
     {
-        private readonly IUtilizacionCargadorRepository _UtilizacionCargadorRepository;
+        private readonly IUtilizacionCargadorRepository _utilizacionCargadorRepository;
+        private readonly ICargadorRepository _cargadorRepository;
+        private readonly IAutobusRepository _autobusRepository;
+        private readonly IHorarioRepository _horarioRepository;
 
-        public UtilizacionCargadorService(IUtilizacionCargadorRepository UtilizacionCargadorRepository)
+        public UtilizacionCargadorService(IUtilizacionCargadorRepository utilizacionCargadorRepository,
+                                          ICargadorRepository cargadorRepository,
+                                          IAutobusRepository autobusRepository,
+                                          IHorarioRepository horarioRepository)
         {
-            _UtilizacionCargadorRepository = UtilizacionCargadorRepository;
+            _utilizacionCargadorRepository = utilizacionCargadorRepository;
+            _cargadorRepository = cargadorRepository;
+            _autobusRepository = autobusRepository;
+            _horarioRepository = horarioRepository;
         }
 
         public async Task<IEnumerable<UtilizacionCargador>> GetAllAsync()
         {
-            return await _UtilizacionCargadorRepository
+            return await _utilizacionCargadorRepository
                 .GetAllAsync();
         }
+        
         public async Task<UtilizacionCargador> CreateAsync(UtilizacionCargador unaUtilizacionCargador)
         {
-            //PREGUNTARLE AL PROFE SI NO ES NECESARIO VALIDAR QUE EL ID DE LA OPERACION AUTOBUS NO EXISTA PREVIAMENTE
-            //Validamos que el autobus_id no exista previamente
-            //var UtilizacionCargadorExistente = await _UtilizacionCargadorRepository
-            //  .GetByNameAsync(unaUtilizacionCargador.Nombre);
+            //Validamos que el cargador exista con ese Id
+            var cargadorExistente = await _cargadorRepository
+                .GetByIdAsync(unaUtilizacionCargador.Cargador_id);
 
-            //if (UtilizacionCargadorExistente.Id != 0)
-            //  throw new AppValidationException($"Ya existe una operacion de un autobus con el nombre {CargadorExistente.Nombre}");
+            if (cargadorExistente.Id == 0)
+                throw new AppValidationException($"El cargador con id {cargadorExistente.Id} no se encuentra registrado");
+
+            //Validamos que el autobus exista con ese Id
+            var autobusExistente = await _autobusRepository
+                .GetByIdAsync(unaUtilizacionCargador.Autobus_id);
+
+            if (autobusExistente.Id == 0)
+                throw new AppValidationException($"El autobus con id {autobusExistente.Id} no se encuentra registrado");
+
+            //Validamos que el horario exista con ese Id
+            var horarioExistente = await _autobusRepository
+                .GetByIdAsync(unaUtilizacionCargador.Horario_id);
+
+            if (horarioExistente.Id == 0)
+                throw new AppValidationException($"El horario con id {autobusExistente.Id} no se encuentra registrado");
+
+            //Validamos que la utilización no exista previamente
+            var utilizacionCargadorExistente = await _utilizacionCargadorRepository
+                .GetByUtilizationAsync(unaUtilizacionCargador.Cargador_id, unaUtilizacionCargador.Autobus_id, unaUtilizacionCargador.Horario_id);
+
+            if (utilizacionCargadorExistente.Cargador_id == unaUtilizacionCargador.Cargador_id && utilizacionCargadorExistente.Autobus_id == unaUtilizacionCargador.Autobus_id && utilizacionCargadorExistente.Horario_id == unaUtilizacionCargador.Horario_id)
+                throw new AppValidationException($"Ya existe una utilización de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la hora {utilizacionCargadorExistente.Horario_id}");
+
             try
             {
-                bool resultadoAccion = await _UtilizacionCargadorRepository
+                bool resultadoAccion = await _utilizacionCargadorRepository
                     .CreateAsync(unaUtilizacionCargador);
 
                 if (!resultadoAccion)
                     throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
 
-                unaUtilizacionCargador = await _UtilizacionCargadorRepository;
-                    //.GetByNameAsync(unCargador.Nombre!);
+                unaUtilizacionCargador = await _utilizacionCargadorRepository
+                    .GetByUtilizationAsync(unaUtilizacionCargador.Cargador_id!, unaUtilizacionCargador.Autobus_id!, unaUtilizacionCargador.Horario_id!);
             }
             catch (DbOperationException error)
             {
                 throw error;
             }
 
-            return UtilizacionCargadorExistente;
+            return utilizacionCargadorExistente;
         }
 
-        public async Task<UtilizacionCargador> UpdateAsync(int _id, Cargador unCargador)
+        public async Task<UtilizacionCargador> UpdateAsync(UtilizacionCargador unaUtilizacionCargador)
         {
-            //Validamos que los parametros sean consistentes
-            if (Cargador_id != unCargador.Id)
-                throw new AppValidationException($"Inconsistencia en el Id del cargador a actualizar. Verifica argumentos");
-
             //Validamos que el cargador exista con ese Id
-            var CargadorExistente = await _CargadorRepository
-                .GetByIdAsync(Cargador_id);
+            var cargadorExistente = await _cargadorRepository
+                .GetByIdAsync(unaUtilizacionCargador.Cargador_id);
 
-            if (CargadorExistente.Id == 0)
-                throw new AppValidationException($"No existe un Cargador registrado con el id {unCargador.Id}");
+            if (cargadorExistente.Id == 0)
+                throw new AppValidationException($"El cargador con id {cargadorExistente.Id} no se encuentra registrado");
 
-            //Validamos que la Autobus tenga nombre
-            if (unCargador.Nombre.Length == 0)
-                throw new AppValidationException("No se puede actualizar un Cargador con nombre nulo");
+            //Validamos que el autobus exista con ese Id
+            var autobusExistente = await _autobusRepository
+                .GetByIdAsync(unaUtilizacionCargador.Autobus_id);
 
-            //Validamos que el nombre no exista previamente en otro Cargador diferente a la que se está actualizando
-            CargadorExistente = await _CargadorRepository
-                .GetByNameAsync(unCargador.Nombre);
+            if (autobusExistente.Id == 0)
+                throw new AppValidationException($"El autobus con id {autobusExistente.Id} no se encuentra registrado");
 
-            if (unCargador.Id != CargadorExistente.Id)
-                throw new AppValidationException($"Ya existe otro autobus con el nombre {unCargador.Nombre}. " +
-                    $"No se puede Actualizar");
+            //Validamos que el horario exista con ese Id
+            var horarioExistente = await _autobusRepository
+                .GetByIdAsync(unaUtilizacionCargador.Horario_id);
+
+            if (horarioExistente.Id == 0)
+                throw new AppValidationException($"El horario con id {autobusExistente.Id} no se encuentra registrado");
+
+            //Validamos que la utilización no exista previamente
+            var utilizacionCargadorExistente = await _utilizacionCargadorRepository
+              .GetByUtilizationAsync(unaUtilizacionCargador.Cargador_id, unaUtilizacionCargador.Autobus_id, unaUtilizacionCargador.Horario_id);
+
+            if (utilizacionCargadorExistente.Cargador_id != 0 && utilizacionCargadorExistente.Autobus_id != 0)
+                throw new AppValidationException($"Ya existe una utilización de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la hora {utilizacionCargadorExistente.Horario_id}");
 
             //Validamos que haya al menos un cambio en las propiedades
-            if (unCargador.Equals(CargadorExistente))
-                throw new AppValidationException("No hay cambios en los atributos del Cargador. No se realiza actualización.");
+            if (unaUtilizacionCargador.Equals(utilizacionCargadorExistente))
+                throw new AppValidationException("No hay cambios en los atributos de la utilización cargador. No se realiza actualización.");
 
             try
             {
-                bool resultadoAccion = await _CargadorRepository
-                    .UpdateAsync(unCargador);
+                bool resultadoAccion = await _utilizacionCargadorRepository
+                    .UpdateAsync(unaUtilizacionCargador);
 
                 if (!resultadoAccion)
                     throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
 
-                CargadorExistente = await _CargadorRepository
-                    .GetByNameAsync(unCargador.Nombre!);
+                utilizacionCargadorExistente = await _utilizacionCargadorRepository
+                    .GetByUtilizationAsync(unaUtilizacionCargador.Cargador_id!, unaUtilizacionCargador.Autobus_id!, unaUtilizacionCargador.Horario_id!);
             }
             catch (DbOperationException error)
             {
                 throw error;
             }
 
-            return CargadorExistente;
+            return utilizacionCargadorExistente;
         }
 
-        public async Task DeleteAsync(int Cargador_id)
+        public async Task DeleteAsync(int cargador_id, int autobus_id, int horario_id)
         {
-            // validamos que el Cargador a eliminar si exista con ese Id
-            var CargadorExistente = await _CargadorRepository
-                .GetByIdAsync(Cargador_id);
+            // Validamos que la utilización del cargador a eliminar si exista previamente
+            var utilizacionCargadorExistente = await _utilizacionCargadorRepository
+                .GetByUtilizationAsync(cargador_id, autobus_id, horario_id);
 
-            if (CargadorExistente.Id == 0)
-                throw new AppValidationException($"No existe un Cargador con el Id {Cargador_id} que se pueda eliminar");
+            if (utilizacionCargadorExistente.Cargador_id == cargador_id && utilizacionCargadorExistente.Autobus_id == autobus_id && utilizacionCargadorExistente.Horario_id == horario_id)
+                throw new AppValidationException($"Ya existe una utilización de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la hora {utilizacionCargadorExistente.Horario_id}");
 
             //Si existe se puede eliminar
             try
             {
-                bool resultadoAccion = await _CargadorRepository
-                    .DeleteAsync(CargadorExistente);
+                bool resultadoAccion = await _utilizacionCargadorRepository
+                    .DeleteAsync(unaUtilizacionCargador);
 
                 if (!resultadoAccion)
                     throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");

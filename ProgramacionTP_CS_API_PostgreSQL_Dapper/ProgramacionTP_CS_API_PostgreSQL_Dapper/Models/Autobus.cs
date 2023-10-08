@@ -3,7 +3,7 @@
     public class Autobus
     {
         public int Id { get; set; } = 0;
-        public string Nombre { get; set; } = string.Empty;
+        public string Nombre_autobus { get; set; } = string.Empty;
 
         public override bool Equals(object? obj)
         {
@@ -13,7 +13,7 @@
             var otroAutobus = (Autobus)obj;
 
             return Id == otroAutobus.Id
-                && Nombre.Equals(otroAutobus.Nombre);
+                && Nombre_autobus.Equals(otroAutobus.Nombre_autobus);
         }
 
         public override int GetHashCode()
@@ -22,7 +22,7 @@
             {
                 int hash = 3;
                 hash = hash * 5 + Id.GetHashCode();
-                hash = hash * 5 + (Nombre?.GetHashCode() ?? 0);
+                hash = hash * 5 + (Nombre_autobus?.GetHashCode() ?? 0);
 
                 return hash;
             }

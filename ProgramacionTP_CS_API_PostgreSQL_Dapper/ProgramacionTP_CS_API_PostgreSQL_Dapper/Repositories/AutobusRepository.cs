@@ -21,7 +21,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
         {
             using (var conexion = contextoDB.CreateConnection())
             {
-                string sentenciaSQL = "SELECT a.id, a.autobus FROM autobuses a ORDER BY a.id DESC";
+                string sentenciaSQL = "SELECT a.id, a.nombre_autobus FROM autobuses a ORDER BY a.id DESC";
 
                 var resultadoAutobuses = await conexion.QueryAsync<Autobus>(sentenciaSQL,
                                         new DynamicParameters());
@@ -40,7 +40,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                 parametrosSentencia.Add("@autobus_id", autobus_id,
                                         DbType.Int32, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT a.id, a.autobus FROM autobuses a WHERE a.id = @autobus_id";
+                string sentenciaSQL = "SELECT a.id, a.nombre_autobus FROM autobuses a WHERE a.id = @autobus_id";
 
                 var resultado = await conexion.QueryAsync<Autobus>(sentenciaSQL,
                                     parametrosSentencia);
@@ -52,17 +52,17 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             return unAutobus;
         }
 
-        public async Task<Autobus> GetByNameAsync(string autobus_nombre)
+        public async Task<Autobus> GetByNameAsync(string nombre_autobus)
         {
             Autobus unAutobus = new Autobus();
 
             using (var conexion = contextoDB.CreateConnection())
             {
                 DynamicParameters parametrosSentencia = new DynamicParameters();
-                parametrosSentencia.Add("@autobus_nombre", autobus_nombre,
+                parametrosSentencia.Add("@nombre_autobus", nombre_autobus,
                                         DbType.String, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT id, autobus FROM autobuses WHERE LOWER(autobus) = LOWER(@autobus_nombre)";
+                string sentenciaSQL = "SELECT id, nombre_autobus FROM autobuses WHERE LOWER(nombre_autobus) = LOWER(@nombre_autobus)";
 
                 var resultado = await conexion.QueryAsync<Autobus>(sentenciaSQL,
                                     parametrosSentencia);
@@ -123,51 +123,13 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                     string procedimiento = "p_inserta_autobus";
                     var parametros = new
                     {
-                        p_nombre = unAutobus.Nombre
+                        p_nombre = unAutobus.Nombre_autobus
                     };
 
                     var cantidad_filas = await conexion.ExecuteAsync(
                         procedimiento,
                         parametros,
                         commandType: CommandType.StoredProcedure);
-
-                    if (cantidad_filas != 0)
-                        resultadoAccion = true;
-                }
-            }
-            catch (NpgsqlException error)
-            {
-                throw new DbOperationException(error.Message);
-            }
-
-            return resultadoAccion;
-        }
-
-        public async Task<bool> CreateAllPicoOperationAsync(Autobus unAutobus)
-        {
-            bool resultadoAccion = false;
-
-            try
-            {
-                using (var conexion = contextoDB.CreateConnection())
-                {
-                    List<int> horas_pico = new List<int> { 5, 6, 7, 8, 9, 16, 17, 18, 19, 20 };
-                    var cantidad_filas = 0;
-
-                    for (int i = 0; i < horas_pico.Count; i++)
-                    {
-                        string procedimiento = "p_inserta_operacion_autobus";
-                        var parametros = new
-                        {
-                            p_autobus_id = unAutobus.Id,
-                            p_horario_id = horas_pico[i]
-                        };
-
-                        cantidad_filas += await conexion.ExecuteAsync(
-                            procedimiento,
-                            parametros,
-                            commandType: CommandType.StoredProcedure);
-                    }
 
                     if (cantidad_filas != 0)
                         resultadoAccion = true;
@@ -193,8 +155,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                     var parametros = new
                     {
                         p_id = unAutobus.Id,
-                        p_nombre = unAutobus.Nombre
-
+                        p_nombre = unAutobus.Nombre_autobus
                     };
 
                     var cantidad_filas = await conexion.ExecuteAsync(

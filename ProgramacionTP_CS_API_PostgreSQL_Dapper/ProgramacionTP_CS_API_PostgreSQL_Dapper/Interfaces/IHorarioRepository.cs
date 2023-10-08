@@ -6,6 +6,5 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Interfaces
     {
         public Task<IEnumerable<Horario>> GetAllAsync();
         public Task<Horario> GetByIdAsync(int horario_id);
-        public Task<Horario> GetHorariosPicoAsync();
     }
 }

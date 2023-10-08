@@ -35,10 +35,10 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
         {
             // Validamos que el nombre no exista previamente
             var cargadorExistente = await _cargadorRepository
-                .GetByNameAsync(unCargador.Nombre);
+                .GetByNameAsync(unCargador.Nombre_cargador);
 
             if (cargadorExistente.Id != 0)
-                throw new AppValidationException($"Ya existe un cargador con el nombre {cargadorExistente.Nombre}");
+                throw new AppValidationException($"Ya existe un cargador con el nombre {cargadorExistente.Nombre_cargador}");
             try
             {
                 bool resultadoAccion = await _cargadorRepository
@@ -48,7 +48,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                     throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
 
                 unCargador = await _cargadorRepository
-                    .GetByNameAsync(unCargador.Nombre!);
+                    .GetByNameAsync(unCargador.Nombre_cargador!);
             }
             catch (DbOperationException error)
             {
@@ -72,15 +72,15 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                 throw new AppValidationException($"No existe un cargador registrado con el id {unCargador.Id}");
 
             // Validamos que el cargador tenga nombre
-            if (unCargador.Nombre.Length == 0)
+            if (unCargador.Nombre_cargador.Length == 0)
                 throw new AppValidationException("No se puede actualizar un cargador con nombre nulo");
 
             // Validamos que el nombre no exista previamente en otro cargador diferente al que se está actualizando
             cargadorExistente = await _cargadorRepository
-                .GetByNameAsync(unCargador.Nombre);
+                .GetByNameAsync(unCargador.Nombre_cargador);
 
             if (unCargador.Id != cargadorExistente.Id)
-                throw new AppValidationException($"Ya existe otro autobus con el nombre {unCargador.Nombre}. " +
+                throw new AppValidationException($"Ya existe otro autobus con el nombre {unCargador.Nombre_cargador}. " +
                     $"No se puede Actualizar");
 
             // Validamos que haya al menos un cambio en las propiedades
@@ -96,7 +96,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                     throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
 
                 cargadorExistente = await _cargadorRepository
-                    .GetByNameAsync(unCargador.Nombre!);
+                    .GetByNameAsync(unCargador.Nombre_cargador!);
             }
             catch (DbOperationException error)
             {
@@ -121,7 +121,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
 
             if (cantidadUtilizacionesAsociados > 0)
                 throw new AppValidationException($"Existen {cantidadUtilizacionesAsociados} cargadores " +
-                    $"asociados a {cargadorExistente.Nombre}. No se puede eliminar");
+                    $"asociados a {cargadorExistente.Nombre_cargador}. No se puede eliminar");
 
             // Si existe y no tiene utilizaciones asociadas, se puede eliminar
             try

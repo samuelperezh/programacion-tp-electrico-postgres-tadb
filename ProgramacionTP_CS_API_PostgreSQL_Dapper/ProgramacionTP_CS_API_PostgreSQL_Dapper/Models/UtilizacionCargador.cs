@@ -2,9 +2,9 @@
 {
     public class UtilizacionCargador
     {
-        public int CargadorId { get; set; } = 0;
-        public int AutobusId { get; set; } = 0;
-        public int HorarioId { get; set; } = 0;
+        public int Cargador_id { get; set; } = 0;
+        public int Autobus_id { get; set; } = 0;
+        public int Horario_id { get; set; } = 0;
 
         public override bool Equals(object? obj)
         {
@@ -13,9 +13,9 @@
 
             var otraUtilizacion = (UtilizacionCargador)obj;
 
-            return CargadorId == otraUtilizacion.CargadorId
-                && AutobusId == otraUtilizacion.AutobusId
-                && HorarioId == otraUtilizacion.HorarioId;
+            return Cargador_id == otraUtilizacion.Cargador_id
+                && Autobus_id == otraUtilizacion.Autobus_id
+                && Horario_id == otraUtilizacion.Horario_id;
         }
 
         public override int GetHashCode()
@@ -23,9 +23,9 @@
             unchecked
             {
                 int hash = 3;
-                hash = hash * 5 + CargadorId.GetHashCode();
-                hash = hash * 5 + AutobusId.GetHashCode();
-                hash = hash * 5 + HorarioId.GetHashCode();
+                hash = hash * 5 + Cargador_id.GetHashCode();
+                hash = hash * 5 + Autobus_id.GetHashCode();
+                hash = hash * 5 + Horario_id.GetHashCode();
 
                 return hash;
             }

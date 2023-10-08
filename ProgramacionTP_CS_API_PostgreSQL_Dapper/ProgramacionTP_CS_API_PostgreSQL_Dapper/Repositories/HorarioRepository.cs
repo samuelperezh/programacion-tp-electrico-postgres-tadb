@@ -51,25 +51,5 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
 
             return unHorario;
         }
-        public async Task<Horario> GetHorariosPicoAsync() 
-        {
-            Horario unhorarioPico = new Horario();
-
-            using (var conexion = contextoDB.CreateConnection())
-            {
-                DynamicParameters parametrosSentencia = new DynamicParameters();
-                parametrosSentencia.Add("@horarioPico", true, DbType.Boolean, ParameterDirection.Input);
-
-                string sentenciaSQL = "SELECT id, horario_pico FROM horarios WHERE horario_pico = @horarioPico";
-
-
-                var resultado = await conexion.QueryAsync<Horario>(sentenciaSQL, parametrosSentencia);
-
-                if (resultado.Count() > 0)
-                    unhorarioPico = resultado.First();
-
-            }
-            return unhorarioPico;
-        }
     }
 }

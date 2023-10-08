@@ -6,8 +6,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Interfaces
     {
 
         public Task<IEnumerable<OperacionAutobus>> GetAllAsync();
-        public Task<int> GetTotalAssociatedOperationsAsync(int autobus_id, int horario_id);
-        public Task<IEnumerable<OperacionAutobus>> GetAssociatedOperationsAsync(int autobus_id, int horario_id);
+        public Task<OperacionAutobus> GetByOperationAsync(int autobus_id, int horario_id);
         public Task<bool> CreateAsync(OperacionAutobus unaOperacionAutobus);
         public Task<bool> UpdateAsync(OperacionAutobus unaOperacionAutobus);
         public Task<bool> DeleteAsync(OperacionAutobus unaOperacionAutobus);

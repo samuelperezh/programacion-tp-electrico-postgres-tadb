@@ -23,22 +23,22 @@ grant select, insert, update, delete, trigger on all tables in schema public to 
 -- Tabla: cargadores
 create table cargadores (
     id int primary key generated always as identity,
-    cargador varchar(10) not null
+    nombre_cargador varchar(10) not null
 )
 
 comment on table cargadores is 'Tabla que contiene los cargadores de los buses del sistema de transporte público eléctrico';
 comment on column cargadores.id is 'Identificador del cargador';
-comment on column cargadores.cargador is 'Nombre del cargador';
+comment on column cargadores.nombre_cargador is 'Nombre del cargador';
 
 -- Tabla: autobuses
 create table autobuses (
     id int primary key generated always as identity,
-    autobus varchar(10) not null
+    nombre_autobus varchar(10) not null
 )
 
 comment on table autobuses is 'Tabla que contiene los autobuses del sistema de transporte público eléctrico';
 comment on column autobuses.id is 'Identificador del autobus';
-comment on column autobuses.autobus is 'Nombre del autobus';
+comment on column autobuses.nombre_autobus is 'Nombre del autobus';
 
 -- Tabla: horarios
 create table horarios (
@@ -52,9 +52,9 @@ comment on column horarios.horario_pico is 'Indica si el horario es pico o no';
 
 -- Tabla: utilizacion_cargadores
 create table utilizacion_cargadores (
-    cargador_id int references cargadores(id) unique not null,
-    autobus_id int references autobuses(id)unique not null,
-    horario_id int references horarios(id)unique not null,
+    cargador_id int references cargadores(id) not null,
+    autobus_id int references autobuses(id) not null,
+    horario_id int references horarios(id) not null,
     primary key (cargador_id, autobus_id, horario_id)
 )
 
@@ -63,10 +63,10 @@ comment on column utilizacion_cargadores.cargador_id is 'Identificador del carga
 comment on column utilizacion_cargadores.autobus_id is 'Identificador del autobus';
 comment on column utilizacion_cargadores.horario_id is 'Identificador del horario';
 
--- Tabla: operacion_autobuses / estado_autobuses
+-- Tabla: operacion_autobuses
 create table operacion_autobuses (
-    autobus_id int references autobuses(id) unique not null,
-    horario_id int references horarios(id) unique not null,
+    autobus_id int references autobuses(id) not null,
+    horario_id int references horarios(id) not null,
     primary key (autobus_id, horario_id)
 )
 
@@ -89,7 +89,7 @@ create or replace procedure p_inserta_cargador(
 language plpgsql
 as $$
     begin
-        insert into cargadores (cargador)
+        insert into cargadores (nombre_cargador)
         values (p_cargador);
     end;
 $$;
@@ -103,10 +103,11 @@ language plpgsql
 as $$
     begin
         update cargadores
-        set cargador = p_cargador
+        set nombre_cargador = p_cargador
         where id = p_id;
     end;
 $$;
+
 
 -- Eliminación: p_elimina_cargador
 create or replace procedure p_elimina_cargador(
@@ -130,20 +131,21 @@ create or replace procedure p_inserta_autobus(
     p_autobus varchar(10)
 )
 language plpgsql
-as $$
-    begin
-        insert into autobuses (autobus)
-        values (p_autobus);
+as
+$$
+declare
+    l_autobus_id integer;
+begin
+    insert into autobuses (nombre_autobus)
+    values (p_autobus)
+    returning id into l_autobus_id;
 
-        insert into operacion_autobuses (autobus_id, horario_id)
-        values (
-            select autobus_id id, horario_id
-            from horario
-            where horario_pico = true
-        );
-    end;
+    insert into operacion_autobuses (autobus_id, horario_id)
+    select l_autobus_id, id
+    from horarios
+    where horario_pico = true;
+end;
 $$;
-
 
 -- Actualización: p_actualiza_autobus
 create or replace procedure p_actualiza_autobus(
@@ -154,7 +156,7 @@ language plpgsql
 as $$
     begin
         update autobuses
-        set autobus = p_autobus
+        set nombre_autobus = p_autobus
         where id = p_id;
     end;
 $$;
@@ -271,7 +273,7 @@ create or replace procedure p_inserta_operacion_autobus(
 language plpgsql
 as $$
     begin
-        insert into operacion_autobus (autobus_id, horario_id)
+        insert into operacion_autobuses (autobus_id, horario_id)
         values (p_autobus_id, p_horario_id);
     end;
 $$;
