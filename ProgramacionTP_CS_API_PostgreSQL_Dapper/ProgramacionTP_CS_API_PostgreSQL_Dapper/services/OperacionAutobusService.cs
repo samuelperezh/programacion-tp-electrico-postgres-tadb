@@ -48,7 +48,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                 .GetByOperationAsync(unaOperacionAutobus.Autobus_id, unaOperacionAutobus.Horario_id);
 
             if (operacionAutobusExistente.Autobus_id == unaOperacionAutobus.Autobus_id && operacionAutobusExistente.Horario_id == unaOperacionAutobus.Horario_id) 
-                throw new AppValidationException($"Ya existe una operación con el autobus {operacionAutobusExistente.Autobus_id} en el horario {operacionAutobusExistente.Horario_id}");
+                throw new AppValidationException($"No existe una operación con el autobus {operacionAutobusExistente.Autobus_id} en el horario {operacionAutobusExistente.Horario_id}");
             
             try
             {
@@ -98,7 +98,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
 
             //Validamos que haya al menos un cambio en las propiedades
             if (unaOperacionAutobus.Equals(operacionAutobusExistente))
-                throw new AppValidationException("No hay cambios en los atributos de la cerveza. No se realiza actualización.");
+                throw new AppValidationException("No hay cambios en los atributos de la operación. No se realiza actualización.");
 
             try
             {
@@ -127,7 +127,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                 .GetByOperationAsync(autobus_id, horario_id);
 
             if (operacionAutobusExistente.Autobus_id == autobus_id && operacionAutobusExistente.Horario_id == horario_id)
-                throw new AppValidationException($"Ya existe una utilización cargador con el autobus {operacionAutobusExistente.Autobus_id} en el horario {operacionAutobusExistente.Horario_id}");
+                throw new AppValidationException($"No existe una operación con el autobus {operacionAutobusExistente.Autobus_id} en el horario {operacionAutobusExistente.Horario_id} para eliminar");
            
             //Si existe y no tiene operaciones asociadas, se puede eliminar
             try
@@ -146,5 +146,9 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             return operacionAutobusExistente;
         }
 
+        internal Task GetByOperationAsync(int v1, int autobus_id, int v2, int horario_id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

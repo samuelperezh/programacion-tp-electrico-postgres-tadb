@@ -78,25 +78,25 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             return utilizacionCargadorExistente;
         }
 
-        public async Task<UtilizacionCargador> UpdateAsync(UtilizacionCargador unaUtilizacionCargador)
+        public async Task<UtilizacionCargador> UpdateAsync(int cargador_id, int autobus_id, int horario_id,UtilizacionCargador unaUtilizacionCargador)
         {
             //Validamos que el cargador exista con ese Id
             var cargadorExistente = await _cargadorRepository
-                .GetByIdAsync(unaUtilizacionCargador.Cargador_id);
+                .GetByIdAsync(cargador_id);
 
             if (cargadorExistente.Id == 0)
                 throw new AppValidationException($"El cargador con id {cargadorExistente.Id} no se encuentra registrado");
 
-            //Validamos que el autobus exista con ese Id
+            // Validamos que el autobus exista con ese Id
             var autobusExistente = await _autobusRepository
-                .GetByIdAsync(unaUtilizacionCargador.Autobus_id);
+                .GetByIdAsync(autobus_id);
 
             if (autobusExistente.Id == 0)
                 throw new AppValidationException($"El autobus con id {autobusExistente.Id} no se encuentra registrado");
 
             //Validamos que el horario exista con ese Id
             var horarioExistente = await _autobusRepository
-                .GetByIdAsync(unaUtilizacionCargador.Horario_id);
+                .GetByIdAsync(horario_id);
 
             if (horarioExistente.Id == 0)
                 throw new AppValidationException($"El horario con id {autobusExistente.Id} no se encuentra registrado");

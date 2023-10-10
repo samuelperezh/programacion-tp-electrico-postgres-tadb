@@ -21,9 +21,9 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
         {
             using (var conexion = contextoDB.CreateConnection())
             {
-                string sentenciaSQL = "SELECT autobus_id, horario_id"+
-                                      "FROM operacion_autobuses" +
-                                      "ORDER BY autobus_id DESC, horario_id DESC";
+                string sentenciaSQL = "SELECT autobus_id, horario_id " +
+                                      "FROM operacion_autobuses " +
+                                      "ORDER BY autobus_id, horario_id";
 
                 var resultadoOperacionAutobuses = await conexion.QueryAsync<OperacionAutobus>(sentenciaSQL,
                                         new DynamicParameters());
