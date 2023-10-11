@@ -82,9 +82,9 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                 parametrosSentencia.Add("@autobus_id", autobus_id,
                                         DbType.Int32, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT COUNT(id) totalUtilizaciones " +
+                string sentenciaSQL = "SELECT COUNT(autobus_id) totalUtilizaciones " +
                                       "FROM utilizacion_cargadores " +
-                                      "WHERE autobus_id = @autobus_id ";
+                                      "WHERE autobus_id = @autobus_id";
 
                 var totalUtilizaciones = await conexion.QueryFirstAsync<int>(sentenciaSQL,
                                         parametrosSentencia);
@@ -101,9 +101,9 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                 parametrosSentencia.Add("@autobus_id", autobus_id,
                                         DbType.Int32, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT COUNT(id) totalOperaciones " +
+                string sentenciaSQL = "SELECT COUNT(autobus_id) totalOperaciones " +
                                       "FROM operacion_autobuses " +
-                                      "WHERE autobus_id = @autobus_id ";
+                                      "WHERE autobus_id = @autobus_id";
 
                 var totalOperaciones = await conexion.QueryFirstAsync<int>(sentenciaSQL,
                                         parametrosSentencia);

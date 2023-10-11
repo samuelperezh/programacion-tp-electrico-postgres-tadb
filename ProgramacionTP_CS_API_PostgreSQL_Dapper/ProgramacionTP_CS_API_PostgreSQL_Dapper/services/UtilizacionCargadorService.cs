@@ -46,17 +46,17 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                 throw new AppValidationException($"El autobus con id {autobusExistente.Id} no se encuentra registrado");
 
             //Validamos que el horario exista con ese Id
-            var horarioExistente = await _autobusRepository
+            var horarioExistente = await _horarioRepository
                 .GetByIdAsync(unaUtilizacionCargador.Horario_id);
 
             if (horarioExistente.Id == 0)
-                throw new AppValidationException($"El horario con id {autobusExistente.Id} no se encuentra registrado");
+                throw new AppValidationException($"El horario {horarioExistente.Id} no se encuentra registrado");
 
             //Validamos que la utilización no exista previamente
             var utilizacionCargadorExistente = await _utilizacionCargadorRepository
                 .GetByUtilizationAsync(unaUtilizacionCargador.Cargador_id, unaUtilizacionCargador.Autobus_id, unaUtilizacionCargador.Horario_id);
 
-            if (utilizacionCargadorExistente.Cargador_id == unaUtilizacionCargador.Cargador_id && utilizacionCargadorExistente.Autobus_id == unaUtilizacionCargador.Autobus_id && utilizacionCargadorExistente.Horario_id == unaUtilizacionCargador.Horario_id)
+            if (utilizacionCargadorExistente.Cargador_id != 0)
                 throw new AppValidationException($"Ya existe una utilización de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la hora {utilizacionCargadorExistente.Horario_id}");
 
             try
@@ -95,18 +95,18 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                 throw new AppValidationException($"El autobus con id {autobusExistente.Id} no se encuentra registrado");
 
             //Validamos que el horario exista con ese Id
-            var horarioExistente = await _autobusRepository
+            var horarioExistente = await _horarioRepository
                 .GetByIdAsync(horario_id);
 
             if (horarioExistente.Id == 0)
-                throw new AppValidationException($"El horario con id {autobusExistente.Id} no se encuentra registrado");
+                throw new AppValidationException($"El horario {horarioExistente.Id} no se encuentra registrado");
 
-            //Validamos que la utilización no exista previamente
+            //Validamos que la utilización exista previamente
             var utilizacionCargadorExistente = await _utilizacionCargadorRepository
               .GetByUtilizationAsync(unaUtilizacionCargador.Cargador_id, unaUtilizacionCargador.Autobus_id, unaUtilizacionCargador.Horario_id);
 
-            if (utilizacionCargadorExistente.Cargador_id != 0 && utilizacionCargadorExistente.Autobus_id != 0)
-                throw new AppValidationException($"Ya existe una utilización de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la hora {utilizacionCargadorExistente.Horario_id}");
+            if (utilizacionCargadorExistente.Cargador_id == 0)
+                throw new AppValidationException($"No existe una utilización de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la hora {utilizacionCargadorExistente.Horario_id}");
 
             //Validamos que haya al menos un cambio en las propiedades
             if (unaUtilizacionCargador.Equals(utilizacionCargadorExistente))
@@ -137,8 +137,8 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             var utilizacionCargadorExistente = await _utilizacionCargadorRepository
                 .GetByUtilizationAsync(cargador_id, autobus_id, horario_id);
 
-            if (utilizacionCargadorExistente.Cargador_id == cargador_id && utilizacionCargadorExistente.Autobus_id == autobus_id && utilizacionCargadorExistente.Horario_id == horario_id)
-                throw new AppValidationException($"Ya existe una utilización de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la hora {utilizacionCargadorExistente.Horario_id}");
+            if (utilizacionCargadorExistente.Cargador_id == 0)
+                throw new AppValidationException($"No existe una utilización de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la hora {utilizacionCargadorExistente.Horario_id}");
 
             //Si existe se puede eliminar
             try

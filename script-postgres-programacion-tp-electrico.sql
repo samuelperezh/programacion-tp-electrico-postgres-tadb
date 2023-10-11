@@ -84,26 +84,26 @@ comment on column operacion_autobuses.horario_id is 'Identificador del horario';
 
 -- Inserción: p_inserta_cargador
 create or replace procedure p_inserta_cargador(
-    p_cargador varchar(10)
+    p_nombre varchar(10)
 )
 language plpgsql
 as $$
     begin
         insert into cargadores (nombre_cargador)
-        values (p_cargador);
+        values (p_nombre);
     end;
 $$;
 
 -- Actualización: p_actualiza_cargador
 create or replace procedure p_actualiza_cargador(
     p_id int,
-    p_cargador varchar(10)
-)
+    p_nombre varchar(10)
+)-+
 language plpgsql
 as $$
     begin
         update cargadores
-        set nombre_cargador = p_cargador
+        set nombre_cargador = p_nombre
         where id = p_id;
     end;
 $$;
@@ -128,7 +128,7 @@ $$;
 -- Inserción: p_inserta_autobus
 -- Cada vez que se inserte un autobus, se debe poner a operar en horario pico
 create or replace procedure p_inserta_autobus(
-    p_autobus varchar(10)
+    p_nombre varchar(10)
 )
 language plpgsql
 as
@@ -137,7 +137,7 @@ declare
     l_autobus_id integer;
 begin
     insert into autobuses (nombre_autobus)
-    values (p_autobus)
+    values (p_nombre)
     returning id into l_autobus_id;
 
     insert into operacion_autobuses (autobus_id, horario_id)
@@ -150,13 +150,13 @@ $$;
 -- Actualización: p_actualiza_autobus
 create or replace procedure p_actualiza_autobus(
     p_id int,
-    p_autobus varchar(10)
+    p_nombre varchar(10)
 )
 language plpgsql
 as $$
     begin
         update autobuses
-        set nombre_autobus = p_autobus
+        set nombre_autobus = p_nombre
         where id = p_id;
     end;
 $$;
@@ -251,13 +251,15 @@ $$;
 
 -- Eliminación: p_elimina_utilizacion_cargador
 create or replace procedure p_elimina_utilizacion_cargador(
+    p_cargador_id int,
+    p_autobus_id int,
     p_horario_id int
 )
 language plpgsql
 as $$
     begin
         delete from utilizacion_cargadores
-        where horario_id = p_horario_id;
+        where cargador_id=p_cargador_id and autobus_id = p_autobus_id and horario_id = p_horario_id;
     end;
 $$;
 
@@ -294,12 +296,54 @@ $$;
 
 -- Eliminación: p_elimina_operacion_autobus
 create or replace procedure p_elimina_operacion_autobus(
+    p_autobus_id int,
     p_horario_id int
 )
 language plpgsql
 as $$
     begin
         delete from operacion_autobuses
-        where horario_id = p_horario_id;
+        where autobus_id = p_autobus_id and horario_id = p_horario_id;
     end;
 $$;
+
+-- -----------------------------------------------------------
+-- Funciones para consultar el porcentaje de la disponibilidad 
+-- -----------------------------------------------------------
+
+create or replace function f_porcentaje_cargadores_utilizados(p_horario_id int) returns numeric
+language plpgsql
+as $$
+declare
+    l_cargadores_usados float;
+    l_total_cargadores float;
+begin
+    select count(distinct cargador_id) into l_cargadores_usados
+    from utilizacion_cargadores
+    where horario_id = p_horario_id;
+
+    select count(id) into l_total_cargadores
+    from cargadores;
+
+    return l_cargadores_usados / l_total_cargadores * 100;
+end;
+$$;
+
+create or replace function f_porcentaje_autobuses_operacion(p_horario_id int) returns numeric
+language plpgsql
+as $$
+declare
+    l_autobuses_operacion float;
+    l_total_autobuses float;
+begin
+    select count(distinct autobus_id) into l_autobuses_operacion
+    from operacion_autobuses
+    where horario_id = p_horario_id;
+
+    select count(id) into l_total_autobuses
+    from autobuses;
+
+    return l_autobuses_operacion / l_total_autobuses * 100;
+end;
+$$;
+

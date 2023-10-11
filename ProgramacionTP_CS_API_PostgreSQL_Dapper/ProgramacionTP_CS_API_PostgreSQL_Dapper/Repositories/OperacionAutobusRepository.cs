@@ -43,8 +43,8 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                 parametrosSentencia.Add("@horario_id", horario_id,
                                                            DbType.Int32, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT autobus_id, horario_id" +
-                                      "FROM operacion_autobuses" +
+                string sentenciaSQL = "SELECT autobus_id, horario_id " +
+                                      "FROM operacion_autobuses " +
                                       "WHERE autobus_id = @autobus_id AND horario_id = @horario_id";
 
                 var resultado = await conexion.QueryAsync<OperacionAutobus>(sentenciaSQL,

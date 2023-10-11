@@ -43,12 +43,12 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             if (horarioExistente.Id == 0)
                 throw new AppValidationException($"El horario con id {autobusExistente.Id} no se encuentra registrado");
 
-            // Validamos que exista previamente
+            // Validamos que no exista previamente
             var operacionAutobusExistente = await _operacionAutobusRepository
                 .GetByOperationAsync(unaOperacionAutobus.Autobus_id, unaOperacionAutobus.Horario_id);
 
-            if (operacionAutobusExistente.Autobus_id == unaOperacionAutobus.Autobus_id && operacionAutobusExistente.Horario_id == unaOperacionAutobus.Horario_id) 
-                throw new AppValidationException($"No existe una operación con el autobus {operacionAutobusExistente.Autobus_id} en el horario {operacionAutobusExistente.Horario_id}");
+            if (operacionAutobusExistente.Autobus_id != 0) 
+                throw new AppValidationException($"Ya existe una operación con el autobus {operacionAutobusExistente.Autobus_id} en el horario {operacionAutobusExistente.Horario_id}");
             
             try
             {
@@ -93,7 +93,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             var operacionAutobusExistente = await _operacionAutobusRepository
                 .GetByOperationAsync(unaOperacionAutobus.Autobus_id, unaOperacionAutobus.Horario_id);
 
-            if (operacionAutobusExistente.Autobus_id == unaOperacionAutobus.Autobus_id && operacionAutobusExistente.Horario_id == unaOperacionAutobus.Horario_id)
+            if (operacionAutobusExistente.Autobus_id == 0)
                 throw new AppValidationException($"No existe una operacion con el autobus {operacionAutobusExistente.Autobus_id} en el horario {operacionAutobusExistente.Horario_id}");
 
             //Validamos que haya al menos un cambio en las propiedades
@@ -126,7 +126,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             var operacionAutobusExistente = await _operacionAutobusRepository
                 .GetByOperationAsync(autobus_id, horario_id);
 
-            if (operacionAutobusExistente.Autobus_id == autobus_id && operacionAutobusExistente.Horario_id == horario_id)
+            if (operacionAutobusExistente.Autobus_id == 0)
                 throw new AppValidationException($"No existe una operación con el autobus {operacionAutobusExistente.Autobus_id} en el horario {operacionAutobusExistente.Horario_id} para eliminar");
            
             //Si existe y no tiene operaciones asociadas, se puede eliminar

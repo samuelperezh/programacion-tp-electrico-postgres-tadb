@@ -60,7 +60,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
         }
 
-        [HttpPut("{cargador_id:int}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateAsync(int cargador_id, Cargador unCargador)
         {
             try

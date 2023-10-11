@@ -42,8 +42,8 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                 parametrosSentencia.Add("@cargador_id", cargador_id,
                                         DbType.Int32, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT c.id, c.nombre_cargador" +
-                                      " FROM cargadores c " +
+                string sentenciaSQL = "SELECT c.id, c.nombre_cargador " +
+                                      "FROM cargadores c " +
                                       "WHERE c.id = @cargador_id";
 
                 var resultado = await conexion.QueryAsync<Cargador>(sentenciaSQL,
@@ -66,7 +66,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                 parametrosSentencia.Add("@nombre_cargador", nombre_cargador,
                                         DbType.String, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT c.id, c.nombre_cargador FROM cargadores c WHERE LOWER(c.cargador) = LOWER(@nombre_cargador)";
+                string sentenciaSQL = "SELECT c.id, c.nombre_cargador FROM cargadores c WHERE LOWER(c.nombre_cargador) = LOWER(@nombre_cargador)";
 
                 var resultado = await conexion.QueryAsync<Cargador>(sentenciaSQL,
                                     parametrosSentencia);
@@ -86,9 +86,9 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                 parametrosSentencia.Add("@cargador_id", cargador_id,
                                         DbType.Int32, ParameterDirection.Input);
 
-                string sentenciaSQL = "SELECT COUNT(id) totalUtilizaciones " +
+                string sentenciaSQL = "SELECT COUNT(cargador_id) totalUtilizaciones " +
                                       "FROM utilizacion_cargadores " +
-                                      "WHERE cargador_id = @cargador_id ";
+                                      "WHERE cargador_id = @cargador_id";
 
                 var totalUtilizaciones = await conexion.QueryFirstAsync<int>(sentenciaSQL,
                                         parametrosSentencia);

@@ -7,11 +7,11 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UtilizacionCargadorController : Controller
+    public class UtilizacionCargadoresController : Controller
     {
         private readonly UtilizacionCargadorService _utilizacionCargadorService;
 
-        public UtilizacionCargadorController(UtilizacionCargadorService utilizacionCargadorService)
+        public UtilizacionCargadoresController(UtilizacionCargadorService utilizacionCargadorService)
         {
             _utilizacionCargadorService = utilizacionCargadorService;
         }
@@ -45,7 +45,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
         }
 
-        [HttpPut("{cargador_id:int}/{autobus_id:int}/{horario_id:int}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateAsync(int cargador_id, int autobus_id, int horario_id, UtilizacionCargador unaUtilizacionCargador)
         {
             try
@@ -66,13 +66,13 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
         }
 
-        [HttpDelete("{cargador_id:int}/{autobus_id:int}/{horario_id:int}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteAsync(int cargador_id, int autobus_id, int horario_id)
         {
             try
             {
                 await _utilizacionCargadorService
-                    .DeleteAsync(cargador_id,autobus_id, horario_id);
+                    .DeleteAsync(cargador_id, autobus_id, horario_id);
 
                 return Ok($"Utilización del cargador {cargador_id} con el autobus {autobus_id} y en el horario {horario_id} fue eliminada");
 

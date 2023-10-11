@@ -1,7 +1,10 @@
-﻿using Dapper;
-using ProgramacionTP_CS_API_PostgreSQL_Dapper.DbContexts;
+﻿using ProgramacionTP_CS_API_PostgreSQL_Dapper.DbContexts;
+using ProgramacionTB_CS_API_PostgreSQL_Dapper.Helpers;
 using ProgramacionTP_CS_API_PostgreSQL_Dapper.Interfaces;
 using ProgramacionTP_CS_API_PostgreSQL_Dapper.Models;
+using Dapper;
+using Npgsql;
+using System.Data;
 
 namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
 {
@@ -40,6 +43,32 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                 sentenciaSQL = "SELECT COUNT(cargador_id) total FROM utilizacion_cargadores";
                 unInforme.UtilizacionCargadores = await conexion.QueryFirstAsync<int>(sentenciaSQL, new DynamicParameters());
             }
+            return unInforme;
+        }
+
+        public async Task<Informe> GetByIdAsync(int horario_id)
+        {
+            Informe unInforme = new Informe();
+
+            using (var conexion = contextoDB.CreateConnection())
+            {
+                DynamicParameters parametrosSentencia = new DynamicParameters();
+                parametrosSentencia.Add("@horario_id", horario_id,
+                                        DbType.Int32, ParameterDirection.Input);
+
+                string sentenciaSQL = "SELECT " +
+                                      "(select f_porcentaje_autobuses_operacion(h.id) OperacionAutobuses " +
+                                      "from horarios h where h.id=@horario_id) porcentaje_autobuses_operacion, " +
+                                      "(select f_porcentaje_cargadores_utilizados(h.id) UtilizacionCargadores " +
+                                      "from horarios h where h.id=@horario_id) porcentaje_cargadores_utilizados;";
+
+                var resultado = await conexion.QueryAsync<Informe>(sentenciaSQL,
+                                    parametrosSentencia);
+
+                if (resultado.Count() > 0)
+                    unInforme = resultado.First();
+            }
+
             return unInforme;
         }
     }

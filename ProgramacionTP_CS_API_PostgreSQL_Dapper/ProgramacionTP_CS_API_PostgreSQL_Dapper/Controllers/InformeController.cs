@@ -1,4 +1,6 @@
-﻿using ProgramacionTP_CS_API_PostgreSQL_Dapper.Services;
+﻿using ProgramacionTB_CS_API_PostgreSQL_Dapper.Helpers;
+using ProgramacionTB_CS_API_PostgreSQL_Dapper.Models;
+using ProgramacionTP_CS_API_PostgreSQL_Dapper.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
@@ -21,6 +23,21 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
                 .GetAllAsync();
 
             return Ok(elResumen);
+        }
+
+        [HttpGet("{horario_id:int}")]
+        public async Task<IActionResult> GetByIdAsync(int horario_id)
+        {
+            try
+            {
+                var unInforme = await _informeService
+                    .GetByIdAsync(horario_id);
+                return Ok(unInforme);
+            }
+            catch (AppValidationException error)
+            {
+                return NotFound(error.Message);
+            }
         }
     }
 }

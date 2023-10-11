@@ -25,21 +25,6 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             return Ok(losOperacionAutobuses);
         }
 
-       // [HttpGet("{autobus_id:int}/{horario_id:int}")]
-        //public async Task<IActionResult> GetByOperationAsync(int autobus_id, int horario_id)
-        //{
-          //  try
-            //{
-              //  var unaOperacionAutobus = await _operacionAutobusService
-                //    .GetByOperationAsync(autobus_id, horario_id);
-               // return Ok(unaOperacionAutobus);
-            //}
-            //catch (AppValidationException error)
-            //{
-              //  return NotFound(error.Message);
-            //}
-        //}
-
         [HttpPost]
         public async Task<IActionResult> CreateAsync(OperacionAutobus unaOperacionAutobus)
         {
@@ -60,7 +45,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
         }
 
-        [HttpPut("{autobus_id:int}/{horario_id:int}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateAsync(int autobus_id, int horario_id, OperacionAutobus unaOperacionAutobus)
         {
             try
@@ -81,7 +66,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
         }
 
-        [HttpDelete("{autobus_id:int}/{horario_id:int}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteAsync(int autobus_id, int horario_id)
         {
             try
@@ -89,7 +74,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
                 await _operacionAutobusService
                     .DeleteAsync(autobus_id, horario_id);
 
-                return Ok($"Operacion Autobus {autobus_id} y en el horario {horario_id} fue eliminada");
+                return Ok($"La operacion del autobus {autobus_id} en el horario {horario_id} fue eliminada");
 
             }
             catch (AppValidationException error)
