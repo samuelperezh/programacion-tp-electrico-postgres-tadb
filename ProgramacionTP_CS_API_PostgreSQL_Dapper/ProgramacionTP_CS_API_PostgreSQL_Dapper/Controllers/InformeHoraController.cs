@@ -2,6 +2,7 @@
 using ProgramacionTB_CS_API_PostgreSQL_Dapper.Models;
 using ProgramacionTB_CS_API_PostgreSQL_Dapper.Services;
 using Microsoft.AspNetCore.Mvc;
+using ProgramacionTP_CS_API_PostgreSQL_Dapper.Services;
 
 namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
 {
@@ -14,6 +15,14 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
         public InformeHoraController(InformeHoraService informeHoraService)
         {
             _informeHoraService = informeHoraService;
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            var elResumen = await _informeHoraService
+                .GetAllInformeHoraAsync();
+
+            return Ok(elResumen);
         }
 
         [HttpGet("{hora:int}")]

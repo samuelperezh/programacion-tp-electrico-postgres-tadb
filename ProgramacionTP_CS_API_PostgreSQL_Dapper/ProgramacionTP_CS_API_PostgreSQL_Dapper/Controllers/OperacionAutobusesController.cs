@@ -66,7 +66,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("{autobus_id:int}/{horario_id:int}")]
         public async Task<IActionResult> DeleteAsync(int autobus_id, int horario_id)
         {
             try

@@ -1,6 +1,7 @@
 ﻿using ProgramacionTB_CS_API_PostgreSQL_Dapper.Helpers;
 using ProgramacionTP_CS_API_PostgreSQL_Dapper.Interfaces;
 using ProgramacionTP_CS_API_PostgreSQL_Dapper.Models;
+using ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories;
 
 namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
 {
@@ -12,6 +13,12 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
         {
             _informeHoraRepository = informeHoraRepository;
         }
+        public async Task<IEnumerable<InformeHora>> GetAllInformeHoraAsync()
+        {
+            return await _informeHoraRepository
+                .GetAllInformeHoraAsync();
+        }
+
 
         public async Task<InformeHora> GetInformeHoraAsync(int hora)
         {

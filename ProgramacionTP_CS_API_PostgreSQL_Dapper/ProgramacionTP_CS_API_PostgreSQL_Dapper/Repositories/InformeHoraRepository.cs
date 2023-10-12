@@ -17,6 +17,19 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             contextoDB = unContexto;
         }
 
+        public async Task<IEnumerable<InformeHora>> GetAllInformeHoraAsync()
+        {
+            using (var conexion = contextoDB.CreateConnection())
+            {
+                string sentenciaSQL = "SELECT * FROM v_porcentajes";
+
+                var unInformeHora = await conexion.QueryAsync<InformeHora>(sentenciaSQL,
+                                        new DynamicParameters());
+
+                return unInformeHora;
+            }
+        }
+
         public async Task<InformeHora> GetInformeHoraAsync(int hora)
         {
             InformeHora unInforme = new InformeHora();

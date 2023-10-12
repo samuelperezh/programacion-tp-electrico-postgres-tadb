@@ -40,7 +40,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
         }
 
-        [HttpPost("{autobus_id:int}")]
+        [HttpPost]
         public async Task<IActionResult> CreateAsync(Autobus unAutobus)
         {
             try
@@ -60,7 +60,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{autobus_id:int}")]
         public async Task<IActionResult> UpdateAsync(int autobus_id, Autobus unAutobus)
         {
             try
