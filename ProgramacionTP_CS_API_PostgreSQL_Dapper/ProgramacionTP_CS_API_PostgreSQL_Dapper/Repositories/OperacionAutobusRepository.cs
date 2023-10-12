@@ -55,8 +55,25 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
             }
 
             return unaOperacionAutobus;
-        }   
+        }
 
+        public async Task<string> GetAutobusStateAsync(int horario_id, int autobus_id)
+        {
+            string estado;
+
+            using (var connection = contextoDB.CreateConnection())
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@horario_id", horario_id, DbType.Int32, ParameterDirection.Input);
+                parameters.Add("@autobus_id", autobus_id, DbType.Int32, ParameterDirection.Input);
+
+                string sqlQuery = "SELECT * FROM f_estado_autobus(@horario_id, @autobus_id)";
+
+                estado = await connection.QueryFirstOrDefaultAsync<string>(sqlQuery, parameters);
+            }
+
+            return estado;
+        }
         public async Task<bool> CreateAsync(OperacionAutobus unaOperacionAutobus)
         {
             bool resultadoAccion = false;

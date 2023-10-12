@@ -43,7 +43,36 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             if (horarioExistente.Id == 0)
                 throw new AppValidationException($"El horario con id {autobusExistente.Id} no se encuentra registrado");
 
-            // Validamos que no exista previamente
+            //Validar el estado del autobus sea "Operando" y que sus horas consecutivas sean menor o igual a 6 
+            int maxOperandoCount = 6;
+            int operandoCount = 0;
+            int maxHour = 23; // Define el rango de horas que deseas verificar.
+
+            for (int hora = 0; hora <= maxHour; hora++)
+            {
+                string estado = await _operacionAutobusRepository.GetAutobusStateAsync(hora, unaOperacionAutobus.Autobus_id); // Llama a la función para obtener el estado
+
+                if (estado == "Operando")
+                {
+                    operandoCount++;
+                }
+                else if (estado == "Cargando")
+                {
+                    operandoCount = 0; // Reinicia la cuenta si se encuentra "Cargando"
+                }
+
+                if (operandoCount >= maxOperandoCount)
+                {
+                    throw new AppValidationException("El autobús ha estado operando más de 6 veces sin ser consecutivas.");
+                }
+            }
+
+            if (operandoCount >= maxOperandoCount)
+            {
+                throw new AppValidationException("El autobús ha estado operando más de 6 veces sin ser consecutivas.");
+            }
+
+            //Validamos que no exista previamente
             var operacionAutobusExistente = await _operacionAutobusRepository
                 .GetByOperationAsync(unaOperacionAutobus.Autobus_id, unaOperacionAutobus.Horario_id);
 

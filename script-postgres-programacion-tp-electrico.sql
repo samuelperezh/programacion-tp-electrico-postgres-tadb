@@ -359,3 +359,25 @@ create or replace view v_porcentajes as (
         f_porcentaje_autobuses_operacion(h.id) as porcentajeautobusesoperacion
     from horarios h
 );
+
+-----------------------------------------------------------------------------
+--Función sobre el mapeo del estado de un autobus en un horario específico,
+-- El autobus tendrá 3 estados diferentes: cargando, operando y parqueado
+-----------------------------------------------------------------------------
+create or replace function f_estado_autobus(p_horario_id int, p_autobus_id int) returns table (estado varchar(10))
+language plpgsql
+as $$
+declare
+    l_estado varchar(10);
+begin
+    select case
+        when (select count(distinct cargador_id) from utilizacion_cargadores where horario_id = p_horario_id and autobus_id = p_autobus_id) > 0 then 'Cargando'
+        when (select count(distinct autobus_id) from operacion_autobuses where horario_id = p_horario_id and autobus_id = p_autobus_id) > 0 then 'Operando'
+        else 'Parqueado'
+    end into l_estado;
+
+    return query
+        select l_estado;
+end;
+$$;
+
