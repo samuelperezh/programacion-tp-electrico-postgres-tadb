@@ -14,7 +14,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Services
             _informeOperacionAutobusRepository = informeOperacionAutobusRepository;
         }
 
-        public async Task<InformeOperacionAutobus> GetInformeOperacionAsync()
+        public async Task<IEnumerable<InformeOperacionAutobus>> GetInformeOperacionAsync()
         {
             return await _informeOperacionAutobusRepository
                 .GetInformeOperacionAsync();

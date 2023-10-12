@@ -348,7 +348,7 @@ end;
 $$;
 
 -- -----------------------------------------------------------
--- Vista para consultar los porcentajes
+-- Vistas para mejorar la visualización de los datos
 -- -----------------------------------------------------------
 
 create or replace view v_porcentajes as (
@@ -359,6 +359,15 @@ create or replace view v_porcentajes as (
         f_porcentaje_autobuses_operacion(h.id) as porcentajeautobusesoperacion
     from horarios h
 );
+
+create or replace view v_total_operacion_autobuses as (
+    select
+        h.id as hora,
+        (select count(distinct autobus_id) from operacion_autobuses where horario_id = h.id) total_operacion_autobuses
+    from horarios h
+);
+
+
 
 -----------------------------------------------------------------------------
 --Función sobre el mapeo del estado de un autobus en un horario específico,

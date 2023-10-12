@@ -16,17 +16,17 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
         {
             contextoDB = unContexto;
         }
-        public async Task<InformeOperacionAutobus> GetInformeOperacionAsync()
+        public async Task<IEnumerable<InformeOperacionAutobus>> GetInformeOperacionAsync()
         {
-            InformeOperacionAutobus unInformeOperacionAutobus = new InformeOperacionAutobus();
-
             using (var conexion = contextoDB.CreateConnection())
             {
-                //Total Horarios y operacion autobuses
                 string sentenciaSQL = "SELECT * FROM v_total_operacion_autobuses";
-                unInformeOperacionAutobus.Hora = await conexion.QueryFirstAsync<int>(sentenciaSQL, new DynamicParameters());
+
+                var unInformeOperacionAutobus = await conexion.QueryAsync<InformeOperacionAutobus>(sentenciaSQL,
+                                        new DynamicParameters());
+
+                return unInformeOperacionAutobus;
             }
-            return unInformeOperacionAutobus;
         }
     }
 }
