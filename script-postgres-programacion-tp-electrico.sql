@@ -23,7 +23,7 @@ grant select, insert, update, delete, trigger on all tables in schema public to 
 -- Tabla: cargadores
 create table cargadores (
     id int primary key generated always as identity,
-    nombre_cargador varchar(10) not null
+    nombre_cargador varchar(20) not null
 )
 
 comment on table cargadores is 'Tabla que contiene los cargadores de los buses del sistema de transporte público eléctrico';
@@ -33,7 +33,7 @@ comment on column cargadores.nombre_cargador is 'Nombre del cargador';
 -- Tabla: autobuses
 create table autobuses (
     id int primary key generated always as identity,
-    nombre_autobus varchar(10) not null
+    nombre_autobus varchar(20) not null
 )
 
 comment on table autobuses is 'Tabla que contiene los autobuses del sistema de transporte público eléctrico';
@@ -347,3 +347,15 @@ begin
 end;
 $$;
 
+-- -----------------------------------------------------------
+-- Vista para consultar los porcentajes
+-- -----------------------------------------------------------
+
+create or replace view v_porcentajes as (
+    select
+        h.id as hora,
+        h.horario_pico as horariopico,
+        f_porcentaje_cargadores_utilizados(h.id) as porcentajecargadoresutilizados,
+        f_porcentaje_autobuses_operacion(h.id) as porcentajeautobusesoperacion
+    from horarios h
+);
