@@ -5,5 +5,6 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Interfaces
     public interface IInformeOperacionAutobusRepository
     {
         public Task<IEnumerable<InformeOperacionAutobus>> GetInformeOperacionAsync();
+        public Task<InformeOperacionAutobus> GetInformeOperacionByIdAsync(int hora);
     }
 }

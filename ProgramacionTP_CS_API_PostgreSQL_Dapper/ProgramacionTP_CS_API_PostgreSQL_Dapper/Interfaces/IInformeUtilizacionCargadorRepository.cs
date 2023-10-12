@@ -5,5 +5,6 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Interfaces
     public interface IInformeUtilizacionCargadorRepository
     {
         public Task<IEnumerable<InformeUtilizacionCargador>> GetInformeUtilizacionAsync();
+        public Task<InformeUtilizacionCargador> GetInformeUtilizacionByIdAsync(int hora);
     }
 }

@@ -24,5 +24,20 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
 
             return Ok(elResumen);
         }
+
+        [HttpGet("{hora:int}")]
+        public async Task<IActionResult> GetInformeUtilizacionByIdAsync(int hora)
+        {
+            try
+            {
+                var unInformeUtilizacionCargador = await _informeUtilizacionCargadorService
+                    .GetInformeUtilizacionByIdAsync(hora);
+                return Ok(unInformeUtilizacionCargador);
+            }
+            catch (AppValidationException error)
+            {
+                return NotFound(error.Message);
+            }
+        }
     }
 }

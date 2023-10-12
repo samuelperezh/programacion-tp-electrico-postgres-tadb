@@ -24,5 +24,20 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
 
             return Ok(elResumen);
         }
+
+        [HttpGet("{hora:int}")]
+        public async Task<IActionResult> GetInformeOperacionByIdAsync(int hora)
+        {
+            try
+            {
+                var unInformeOperacionAutobus = await _informeOperacionAutobusService
+                    .GetInformeOperacionByIdAsync(hora);
+                return Ok(unInformeOperacionAutobus);
+            }
+            catch (AppValidationException error)
+            {
+                return NotFound(error.Message);
+            }
+        }
     }
 }

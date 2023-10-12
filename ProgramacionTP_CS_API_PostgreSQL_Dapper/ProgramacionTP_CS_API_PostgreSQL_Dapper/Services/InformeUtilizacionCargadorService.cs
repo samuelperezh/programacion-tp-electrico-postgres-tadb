@@ -19,6 +19,18 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Services
             return await _informeUtilizacionCargadorRepository
                 .GetInformeUtilizacionAsync();
         }
+
+        public async Task<InformeUtilizacionCargador> GetInformeUtilizacionByIdAsync(int hora)
+        {
+            // Validamos que el informe operacion autobus exista
+            var unInformeUtilizacionCargador = await _informeUtilizacionCargadorRepository
+                .GetInformeUtilizacionByIdAsync(hora);
+
+            if (unInformeUtilizacionCargador.Hora != hora)
+                throw new AppValidationException($"La hora {hora} no existe en la base de datos");
+
+            return unInformeUtilizacionCargador;
+        }
     }
 }
 
