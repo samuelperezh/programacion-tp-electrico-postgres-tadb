@@ -367,7 +367,12 @@ create or replace view v_total_operacion_autobuses as (
     from horarios h
 );
 
-
+create or replace view v_total_utilizacion_cargadores as (
+    select
+        h.id as hora,
+        (select count(distinct cargador_id) from utilizacion_cargadores where horario_id = h.id) total_utilizacion_cargadores
+    from horarios h
+);
 
 -----------------------------------------------------------------------------
 --Función sobre el mapeo del estado de un autobus en un horario específico,
