@@ -46,7 +46,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                     .CreateAsync(unAutobus);
 
                 if (!resultadoAccion)
-                    throw new AppValidationException("OperaciÛn ejecutada pero no generÛ cambios en la DB");
+                    throw new AppValidationException("Operaci√≥n ejecutada pero no gener√≥ cambios en la DB");
 
                 unAutobus = await _autobusRepository
                     .GetByNameAsync(unAutobus.Nombre_autobus!);
@@ -61,7 +61,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
 
         public async Task<Autobus> UpdateAsync(int autobus_id, Autobus unAutobus)
         {
-            // Validamos que los par·metros sean consistentes
+            // Validamos que los par√≥metros sean consistentes
             if (autobus_id != unAutobus.Id)
                 throw new AppValidationException($"Inconsistencia en el Id del autobus a actualizar. Verifica argumentos");
 
@@ -76,17 +76,17 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             if (unAutobus.Nombre_autobus.Length == 0)
                 throw new AppValidationException("No se puede actualizar un autobus con nombre nulo");
 
-            // Validamos que el nombre no exista previamente en otro autobus diferente al que se est· actualizando
+            // Validamos que el nombre no exista previamente en otro autobus diferente al que se est√≥ actualizando
             autobusExistente = await _autobusRepository
                 .GetByNameAsync(unAutobus.Nombre_autobus);
 
-            if (unAutobus.Id != autobusExistente.Id)
+            if (unAutobus.Nombre_autobus == autobusExistente.Nombre_autobus)
                 throw new AppValidationException($"Ya existe otro autobus con el nombre {unAutobus.Nombre_autobus}. " +
                     $"No se puede Actualizar");
 
             // Validamos que haya al menos un cambio en las propiedades
             if (unAutobus.Equals(autobusExistente))
-                throw new AppValidationException("No hay cambios en los atributos del autobus. No se realiza actualizaciÛn.");
+                throw new AppValidationException("No hay cambios en los atributos del autobus. No se realiza actualizaci√≥n.");
 
             try
             {
@@ -94,7 +94,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                     .UpdateAsync(unAutobus);
 
                 if (!resultadoAccion)
-                    throw new AppValidationException("OperaciÛn ejecutada pero no generÛ cambios en la DB");
+                    throw new AppValidationException("Operaci√≥n ejecutada pero no gener√≥ cambios en la DB");
 
                 autobusExistente = await _autobusRepository
                     .GetByNameAsync(unAutobus.Nombre_autobus!);
@@ -132,14 +132,14 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                 throw new AppValidationException($"Existen {cantidadOperacionesAutobusAsociados} operaciones de autobuses " +
                     $"asociados a {autobusExistente.Nombre_autobus}. No se puede eliminar");
 
-            // Si existe y no tiene utilizaciÛn de cargadores y operaciones asociadas, se puede eliminar
+            // Si existe y no tiene utilizaci√≥n de cargadores y operaciones asociadas, se puede eliminar
             try
             {
                 bool resultadoAccion = await _autobusRepository
                     .DeleteAsync(autobusExistente);
 
                 if (!resultadoAccion)
-                    throw new AppValidationException("OperaciÛn ejecutada pero no generÛ cambios en la DB");
+                    throw new AppValidationException("Operaci√≥n ejecutada pero no gener√≥ cambios en la DB");
             }
             catch (DbOperationException error)
             {

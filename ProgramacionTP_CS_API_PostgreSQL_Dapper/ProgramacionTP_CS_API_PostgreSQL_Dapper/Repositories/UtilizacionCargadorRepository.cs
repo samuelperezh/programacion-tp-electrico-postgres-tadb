@@ -81,6 +81,18 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Repositories
                         parametros,
                         commandType: CommandType.StoredProcedure);
 
+                    var parametros2 = new
+                    {
+                        p_cargador_id = unaUtilizacionCargador.Cargador_id,
+                        p_autobus_id = unaUtilizacionCargador.Autobus_id,
+                        p_horario_id = unaUtilizacionCargador.Horario_id+1
+                    };
+
+                    var cantidad_filas2 = await conexion.ExecuteAsync(
+                        procedimiento,
+                        parametros2,
+                        commandType: CommandType.StoredProcedure);
+
                     if (cantidad_filas != 0)
                         resultadoAccion = true;
                 }

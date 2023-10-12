@@ -24,7 +24,7 @@ grant select, insert, update, delete, trigger on all tables in schema public to 
 create table cargadores (
     id int primary key generated always as identity,
     nombre_cargador varchar(20) not null
-)
+);
 
 comment on table cargadores is 'Tabla que contiene los cargadores de los buses del sistema de transporte público eléctrico';
 comment on column cargadores.id is 'Identificador del cargador';
@@ -34,7 +34,7 @@ comment on column cargadores.nombre_cargador is 'Nombre del cargador';
 create table autobuses (
     id int primary key generated always as identity,
     nombre_autobus varchar(20) not null
-)
+);
 
 comment on table autobuses is 'Tabla que contiene los autobuses del sistema de transporte público eléctrico';
 comment on column autobuses.id is 'Identificador del autobus';
@@ -44,7 +44,7 @@ comment on column autobuses.nombre_autobus is 'Nombre del autobus';
 create table horarios (
     id int primary key not null,
     horario_pico boolean not null
-)
+);
 
 comment on table horarios is 'Tabla que contiene los horarios de operación del sistema de transporte público eléctrico';
 comment on column horarios.id is 'Identificador del horario';
@@ -55,8 +55,8 @@ create table utilizacion_cargadores (
     cargador_id int references cargadores(id) not null,
     autobus_id int references autobuses(id) not null,
     horario_id int references horarios(id) not null,
-    primary key (cargador_id, autobus_id, horario_id)
-)
+    primary key (cargador_id, horario_id)
+);
 
 comment on table utilizacion_cargadores is 'Tabla que contiene la utilización de los cargadores de los buses del sistema de transporte público eléctrico';
 comment on column utilizacion_cargadores.cargador_id is 'Identificador del cargador';
@@ -68,7 +68,7 @@ create table operacion_autobuses (
     autobus_id int references autobuses(id) not null,
     horario_id int references horarios(id) not null,
     primary key (autobus_id, horario_id)
-)
+);
 
 comment on table operacion_autobuses is 'Tabla que contiene la operación de los autobuses del sistema de transporte público eléctrico';
 comment on column operacion_autobuses.autobus_id is 'Identificador del autobus';
@@ -394,4 +394,3 @@ begin
         select l_estado;
 end;
 $$;
-

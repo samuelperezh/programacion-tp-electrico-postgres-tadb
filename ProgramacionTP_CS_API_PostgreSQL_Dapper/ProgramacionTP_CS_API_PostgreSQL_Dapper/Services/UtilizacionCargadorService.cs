@@ -11,16 +11,20 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
         private readonly ICargadorRepository _cargadorRepository;
         private readonly IAutobusRepository _autobusRepository;
         private readonly IHorarioRepository _horarioRepository;
+        private readonly IOperacionAutobusRepository _operacionAutobusRepository;
+
 
         public UtilizacionCargadorService(IUtilizacionCargadorRepository utilizacionCargadorRepository,
                                           ICargadorRepository cargadorRepository,
                                           IAutobusRepository autobusRepository,
-                                          IHorarioRepository horarioRepository)
+                                          IHorarioRepository horarioRepository,
+                                          IOperacionAutobusRepository operacionAutobusRepository)
         {
             _utilizacionCargadorRepository = utilizacionCargadorRepository;
             _cargadorRepository = cargadorRepository;
             _autobusRepository = autobusRepository;
             _horarioRepository = horarioRepository;
+            _operacionAutobusRepository = operacionAutobusRepository;
         }
 
         public async Task<IEnumerable<UtilizacionCargador>> GetAllAsync()
@@ -52,12 +56,23 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             if (horarioExistente.Id == 0)
                 throw new AppValidationException($"El horario {horarioExistente.Id} no se encuentra registrado");
 
-            //Validamos que la utilizaciÛn no exista previamente
+            //Validamos que se pueda hacer la utilizaci√≥n por dos horas consecutivas
+            string estado_hora = await _operacionAutobusRepository.GetAutobusStateAsync(unaUtilizacionCargador.Horario_id, unaUtilizacionCargador.Autobus_id);
+            string estado_hora_siguiente = await _operacionAutobusRepository.GetAutobusStateAsync(unaUtilizacionCargador.Horario_id + 1, unaUtilizacionCargador.Autobus_id);
+
+            if (estado_hora == "Cargando" || estado_hora_siguiente == "Cargando") {
+                throw new AppValidationException($"Ya existe una utilizaci√≥n de cargador en el autobus {unaUtilizacionCargador.Autobus_id}, en el cargador {unaUtilizacionCargador.Cargador_id}, en las horas {unaUtilizacionCargador.Horario_id} y {unaUtilizacionCargador.Horario_id + 1}");
+            }
+            else if (estado_hora == "Operando" || estado_hora_siguiente == "Operando") {
+                throw new AppValidationException($"El autobus con id {unaUtilizacionCargador.Autobus_id}, no se puede poner a cargar en las horas {unaUtilizacionCargador.Horario_id} y {unaUtilizacionCargador.Horario_id + 1} porque est√° operando");
+            }
+
+            //Validamos que la utilizaci√≥n no exista previamente
             var utilizacionCargadorExistente = await _utilizacionCargadorRepository
                 .GetByUtilizationAsync(unaUtilizacionCargador.Cargador_id, unaUtilizacionCargador.Autobus_id, unaUtilizacionCargador.Horario_id);
 
             if (utilizacionCargadorExistente.Cargador_id != 0)
-                throw new AppValidationException($"Ya existe una utilizaciÛn de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la hora {utilizacionCargadorExistente.Horario_id}");
+                throw new AppValidationException($"Ya existe una utilizaci√≥n de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la horas {utilizacionCargadorExistente.Horario_id} y {utilizacionCargadorExistente.Horario_id + 1}");
 
             try
             {
@@ -65,7 +80,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                     .CreateAsync(unaUtilizacionCargador);
 
                 if (!resultadoAccion)
-                    throw new AppValidationException("OperaciÛn ejecutada pero no generÛ cambios en la DB");
+                    throw new AppValidationException("Operaci√≥n ejecutada pero no gener√≥ cambios en la DB");
 
                 unaUtilizacionCargador = await _utilizacionCargadorRepository
                     .GetByUtilizationAsync(unaUtilizacionCargador.Cargador_id!, unaUtilizacionCargador.Autobus_id!, unaUtilizacionCargador.Horario_id!);
@@ -101,16 +116,16 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             if (horarioExistente.Id == 0)
                 throw new AppValidationException($"El horario {horarioExistente.Id} no se encuentra registrado");
 
-            //Validamos que la utilizaciÛn exista previamente
+            //Validamos que la utilizaci√≥n exista previamente
             var utilizacionCargadorExistente = await _utilizacionCargadorRepository
               .GetByUtilizationAsync(unaUtilizacionCargador.Cargador_id, unaUtilizacionCargador.Autobus_id, unaUtilizacionCargador.Horario_id);
 
             if (utilizacionCargadorExistente.Cargador_id == 0)
-                throw new AppValidationException($"No existe una utilizaciÛn de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la hora {utilizacionCargadorExistente.Horario_id}");
+                throw new AppValidationException($"No existe una utilizaci√≥n de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la hora {utilizacionCargadorExistente.Horario_id}");
 
             //Validamos que haya al menos un cambio en las propiedades
             if (unaUtilizacionCargador.Equals(utilizacionCargadorExistente))
-                throw new AppValidationException("No hay cambios en los atributos de la utilizaciÛn cargador. No se realiza actualizaciÛn.");
+                throw new AppValidationException("No hay cambios en los atributos de la utilizaci√≥n cargador. No se realiza actualizaci√≥n.");
 
             try
             {
@@ -118,7 +133,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                     .UpdateAsync(unaUtilizacionCargador);
 
                 if (!resultadoAccion)
-                    throw new AppValidationException("OperaciÛn ejecutada pero no generÛ cambios en la DB");
+                    throw new AppValidationException("Operaci√≥n ejecutada pero no gener√≥ cambios en la DB");
 
                 utilizacionCargadorExistente = await _utilizacionCargadorRepository
                     .GetByUtilizationAsync(unaUtilizacionCargador.Cargador_id!, unaUtilizacionCargador.Autobus_id!, unaUtilizacionCargador.Horario_id!);
@@ -133,12 +148,12 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
 
         public async Task DeleteAsync(int cargador_id, int autobus_id, int horario_id)
         {
-            // Validamos que la utilizaciÛn del cargador a eliminar si exista previamente
+            // Validamos que la utilizaci√≥n del cargador a eliminar si exista previamente
             var utilizacionCargadorExistente = await _utilizacionCargadorRepository
                 .GetByUtilizationAsync(cargador_id, autobus_id, horario_id);
 
             if (utilizacionCargadorExistente.Cargador_id == 0)
-                throw new AppValidationException($"No existe una utilizaciÛn de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la hora {utilizacionCargadorExistente.Horario_id}");
+                throw new AppValidationException($"No existe una utilizaci√≥n de cargador en el autobus {utilizacionCargadorExistente.Autobus_id}, en el cargador {utilizacionCargadorExistente.Cargador_id}, en la hora {utilizacionCargadorExistente.Horario_id}");
 
             //Si existe se puede eliminar
             try
@@ -147,7 +162,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                     .DeleteAsync(utilizacionCargadorExistente);
 
                 if (!resultadoAccion)
-                    throw new AppValidationException("OperaciÛn ejecutada pero no generÛ cambios en la DB");
+                    throw new AppValidationException("Operaci√≥n ejecutada pero no gener√≥ cambios en la DB");
             }
             catch (DbOperationException error)
             {

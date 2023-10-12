@@ -52,7 +52,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
             catch (AppValidationException error)
             {
-                return BadRequest($"Error de validación: {error.Message}");
+                return BadRequest($"Error de validaciÃ³n: {error.Message}");
             }
             catch (DbOperationException error)  
             {
@@ -73,7 +73,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
             catch (AppValidationException error)
             {
-                return BadRequest($"Error de validación: {error.Message}");
+                return BadRequest($"Error de validaciÃ³n: {error.Message}");
             }
             catch (DbOperationException error)
             {
@@ -94,7 +94,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
             catch (AppValidationException error)
             {
-                return BadRequest($"Error de validación: {error.Message}");
+                return BadRequest($"Error de validaciÃ³n: {error.Message}");
             }
             catch (DbOperationException error)
             {

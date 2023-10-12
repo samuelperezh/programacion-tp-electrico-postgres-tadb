@@ -37,7 +37,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
             catch (AppValidationException error)
             {
-                return BadRequest($"Error de validaci髇: {error.Message}");
+                return BadRequest($"Error de validaci贸n: {error.Message}");
             }
             catch (DbOperationException error)
             {
@@ -58,7 +58,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
             catch (AppValidationException error)
             {
-                return BadRequest($"Error de validaci髇: {error.Message}");
+                return BadRequest($"Error de validaci贸n: {error.Message}");
             }
             catch (DbOperationException error)
             {
@@ -74,12 +74,12 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
                 await _utilizacionCargadorService
                     .DeleteAsync(cargador_id, autobus_id, horario_id);
 
-                return Ok($"Utilizaci髇 del cargador {cargador_id} con el autobus {autobus_id} y en el horario {horario_id} fue eliminada");
+                return Ok($"Utilizaci贸n del cargador {cargador_id} con el autobus {autobus_id} y en el horario {horario_id} fue eliminada");
 
             }
             catch (AppValidationException error)
             {
-                return BadRequest($"Error de validaci髇: {error.Message}");
+                return BadRequest($"Error de validaci贸n: {error.Message}");
             }
             catch (DbOperationException error)
             {

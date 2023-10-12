@@ -45,7 +45,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                     .CreateAsync(unCargador);
 
                 if (!resultadoAccion)
-                    throw new AppValidationException("OperaciÛn ejecutada pero no generÛ cambios en la DB");
+                    throw new AppValidationException("Operaci√≥n ejecutada pero no gener√≥ cambios en la DB");
 
                 unCargador = await _cargadorRepository
                     .GetByNameAsync(unCargador.Nombre_cargador!);
@@ -60,7 +60,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
 
         public async Task<Cargador> UpdateAsync(int cargador_id, Cargador unCargador)
         {
-            // Validamos que los par·metros sean consistentes
+            // Validamos que los par√≥metros sean consistentes
             if (cargador_id != unCargador.Id)
                 throw new AppValidationException($"Inconsistencia en el Id del cargador a actualizar. Verifica argumentos");
 
@@ -75,17 +75,17 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             if (unCargador.Nombre_cargador.Length == 0)
                 throw new AppValidationException("No se puede actualizar un cargador con nombre nulo");
 
-            // Validamos que el nombre no exista previamente en otro cargador diferente al que se est· actualizando
+            // Validamos que el nombre no exista previamente en otro cargador diferente al que se est√≥ actualizando
             cargadorExistente = await _cargadorRepository
                 .GetByNameAsync(unCargador.Nombre_cargador);
 
-            if (unCargador.Id != cargadorExistente.Id)
+            if (unCargador.Nombre_cargador == cargadorExistente.Nombre_cargador)
                 throw new AppValidationException($"Ya existe otro autobus con el nombre {unCargador.Nombre_cargador}. " +
                     $"No se puede Actualizar");
 
             // Validamos que haya al menos un cambio en las propiedades
             if (unCargador.Equals(cargadorExistente))
-                throw new AppValidationException("No hay cambios en los atributos del cargador. No se realiza actualizaciÛn.");
+                throw new AppValidationException("No hay cambios en los atributos del cargador. No se realiza actualizaci√≥n.");
 
             try
             {
@@ -93,7 +93,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                     .UpdateAsync(unCargador);
 
                 if (!resultadoAccion)
-                    throw new AppValidationException("OperaciÛn ejecutada pero no generÛ cambios en la DB");
+                    throw new AppValidationException("Operaci√≥n ejecutada pero no gener√≥ cambios en la DB");
 
                 cargadorExistente = await _cargadorRepository
                     .GetByNameAsync(unCargador.Nombre_cargador!);
@@ -130,7 +130,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                     .DeleteAsync(cargadorExistente);
 
                 if (!resultadoAccion)
-                    throw new AppValidationException("OperaciÛn ejecutada pero no generÛ cambios en la DB");
+                    throw new AppValidationException("Operaci√≥n ejecutada pero no gener√≥ cambios en la DB");
             }
             catch (DbOperationException error)
             {
