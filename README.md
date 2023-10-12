@@ -1,5 +1,6 @@
 # Proyecto 3 - Gestión de Programación de Transporte Público Eléctrico
 Tópicos Avanzados en Bases de Datos
+
 Universidad Pontificia Bolivariana
 
 ## Integrantes
@@ -21,6 +22,8 @@ requerimientos mínimos de operación del servicio.
 - WebAPI en C# con framework .NET 7.x implementando **Patrón Repositorio** con capa de persistencia de datos en PostgreSQL a través de Dapper como ORM, utilizando lógica almacenada para realizar operaciones CRUD.
 
 Para la ejecución, se debe usar un software que permita realizar las peticiones GET, POST, PUT y DEL de la API. En este caso, se usó Postman para este propósito.
+
+**Se puede importar todos los endpoints creados en Postman utilizando el archivo Programacion_TP.postman_collection.json**
 
 Se hizo la creación de 26 endpoints que se muestran a continuación:
 
@@ -77,4 +80,3 @@ Se hizo la creación de 26 endpoints que se muestran a continuación:
 25. **Obtener informe de utilización de cargadores por hora:** Para obtener el informe de todas las utilizaciones de cargadores por hora, se envía una petición GET a la dirección https://localhost:7024/api/InformeUtilizacionCargadores
 
 26. **Obtener informe de utilización de buses por hora:** Para obtener el informe de todas las operaciones de buses por hora, se envía una petición GET a la dirección https://localhost:7024/api/InformeOperacionAutobuses
-
