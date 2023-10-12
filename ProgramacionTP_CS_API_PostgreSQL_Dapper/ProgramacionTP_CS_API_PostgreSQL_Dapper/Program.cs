@@ -18,6 +18,7 @@ builder.Services.AddScoped<IHorarioRepository, HorarioRepository>();
 builder.Services.AddScoped<IOperacionAutobusRepository, OperacionAutobusRepository>();
 builder.Services.AddScoped<IUtilizacionCargadorRepository, UtilizacionCargadorRepository>();
 builder.Services.AddScoped<IInformeRepository, InformeRepository>();
+builder.Services.AddScoped<IInformeHoraRepository, InformeHoraRepository>();
 
 //Aqui agregamos los servicios asociados para cada EndPoint
 builder.Services.AddScoped<AutobusService>();
@@ -26,6 +27,7 @@ builder.Services.AddScoped<HorarioService>();
 builder.Services.AddScoped<OperacionAutobusService>();
 builder.Services.AddScoped<UtilizacionCargadorService>();
 builder.Services.AddScoped<InformeService>();
+builder.Services.AddScoped<InformeHoraService>();
 
 // Add services to the container.
 builder.Services.AddControllers()

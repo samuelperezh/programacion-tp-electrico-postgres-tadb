@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controllers\NewFile.txt" />
     <None Remove="DbContexts\NewFile.txt" />
     <None Remove="Interfaces\IHorarioRepository.c" />
     <None Remove="Interfaces\NewFile.txt" />
@@ -20,6 +21,7 @@
     <None Remove="Models\NewFile1.txt" />
     <None Remove="Models\OperacionAutobuses" />
     <None Remove="Repositories\NewFile.txt" />
+    <None Remove="Services\NewFile.txt" />
   </ItemGroup>
 
   <ItemGroup>
