@@ -8,32 +8,16 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Services
     public class InformeService
     {
         private readonly IInformeRepository _informeRepository;
-        private readonly IHorarioRepository _horarioRepository;
 
-        public InformeService(IInformeRepository informeRepository,
-                              IHorarioRepository horarioRepository)
+        public InformeService(IInformeRepository informeRepository)
         {
             _informeRepository = informeRepository;
-            _horarioRepository = horarioRepository;
         }
 
-        public async Task<Informe> GetAllAsync()
+        public async Task<Informe> GetInformeAsync()
         {
             return await _informeRepository
-                .GetAllAsync();
-        }
-
-        public async Task<Informe> GetByIdAsync(int horario_id)
-        {
-            // Validamos que el horario exista con ese Id
-            var unHorario = await _horarioRepository
-                .GetByIdAsync(horario_id);
-
-            if (unHorario.Id == 0)
-                throw new AppValidationException($"Horario no encontrado con la hora {horario_id}");
-
-            return await _informeRepository
-                .GetByIdAsync(horario_id);
+                .GetInformeAsync();
         }
     }
 }

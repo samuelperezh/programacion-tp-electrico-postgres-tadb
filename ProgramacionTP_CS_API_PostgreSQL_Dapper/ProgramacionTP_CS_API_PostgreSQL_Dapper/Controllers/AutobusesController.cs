@@ -40,7 +40,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("{autobus_id:int}")]
         public async Task<IActionResult> CreateAsync(Autobus unAutobus)
         {
             try
@@ -54,7 +54,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             {
                 return BadRequest($"Error de validación: {error.Message}");
             }
-            catch (DbOperationException error)
+            catch (DbOperationException error)  
             {
                 return BadRequest($"Error de operacion en DB: {error.Message}");
             }

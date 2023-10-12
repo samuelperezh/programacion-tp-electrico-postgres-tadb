@@ -45,7 +45,7 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{autobus_id:int}/{horario_id:int}")]
         public async Task<IActionResult> UpdateAsync(int autobus_id, int horario_id, OperacionAutobus unaOperacionAutobus)
         {
             try

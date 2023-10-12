@@ -1,8 +1,8 @@
 ﻿using ProgramacionTP_CS_API_PostgreSQL_Dapper.Models;
 namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Interfaces
 {
-    public interface IInformeRepository
+    public interface IInformeHoraRepository
     {
-        public Task<Informe> GetInformeAsync();
+        public Task<InformeHora> GetInformeHoraAsync(int hora);
     }
 }

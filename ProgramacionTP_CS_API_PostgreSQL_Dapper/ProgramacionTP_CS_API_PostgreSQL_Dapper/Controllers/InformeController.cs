@@ -11,33 +11,18 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
     {
         private readonly InformeService _informeService;
 
-        public InformeController(InformeService resumenService)
+        public InformeController(InformeService informeService)
         {
-            _informeService = resumenService;
+            _informeService = informeService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
             var elResumen = await _informeService
-                .GetAllAsync();
+                .GetInformeAsync();
 
             return Ok(elResumen);
-        }
-
-        [HttpGet("{horario_id:int}")]
-        public async Task<IActionResult> GetByIdAsync(int horario_id)
-        {
-            try
-            {
-                var unInforme = await _informeService
-                    .GetByIdAsync(horario_id);
-                return Ok(unInforme);
-            }
-            catch (AppValidationException error)
-            {
-                return NotFound(error.Message);
-            }
         }
     }
 }
