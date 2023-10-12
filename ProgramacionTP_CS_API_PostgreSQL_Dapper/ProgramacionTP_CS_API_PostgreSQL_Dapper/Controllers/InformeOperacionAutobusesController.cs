@@ -7,11 +7,11 @@ namespace ProgramacionTP_CS_API_PostgreSQL_Dapper.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InformeOperacionAutobusController : Controller
+    public class InformeOperacionAutobusesController : Controller
     {
         private readonly InformeOperacionAutobusService _informeOperacionAutobusService;
 
-        public InformeOperacionAutobusController(InformeOperacionAutobusService informeOperacionAutobusService)
+        public InformeOperacionAutobusesController(InformeOperacionAutobusService informeOperacionAutobusService)
         {
             _informeOperacionAutobusService = informeOperacionAutobusService;
         }
