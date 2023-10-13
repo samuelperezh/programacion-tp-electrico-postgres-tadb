@@ -354,9 +354,9 @@ $$;
 create or replace view v_porcentajes as (
     select
         h.id as hora,
-        h.horario_pico as horariopico,
-        f_porcentaje_cargadores_utilizados(h.id) as porcentajecargadoresutilizados,
-        f_porcentaje_autobuses_operacion(h.id) as porcentajeautobusesoperacion
+        h.horario_pico as horario_pico,
+        f_porcentaje_cargadores_utilizados(h.id) as porcentaje_cargadores_utilizados,
+        f_porcentaje_autobuses_operacion(h.id) as porcentaje_autobuses_operacion
     from horarios h
 );
 

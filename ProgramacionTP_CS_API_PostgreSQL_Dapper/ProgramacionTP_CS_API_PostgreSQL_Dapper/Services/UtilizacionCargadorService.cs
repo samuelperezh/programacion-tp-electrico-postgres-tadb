@@ -53,7 +53,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
             var horarioExistente = await _horarioRepository
                 .GetByIdAsync(unaUtilizacionCargador.Horario_id);
 
-            if (horarioExistente.Id == 0)
+            if (horarioExistente.Id < 0 || horarioExistente.Id > 23)
                 throw new AppValidationException($"El horario {horarioExistente.Id} no se encuentra registrado");
 
             //Validamos que se pueda hacer la utilización por dos horas consecutivas

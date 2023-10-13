@@ -3,8 +3,8 @@
 		"_postman_id": "ffabb4db-6185-4c69-b6e4-1111a5560e46",
 		"name": "Programacion_TP",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29681374",
-		"_collection_link": "https://programaciontb202302.postman.co/workspace/New-Team-Workspace~86beb099-8798-4201-805a-fcf9f333e296/collection/29591469-ffabb4db-6185-4c69-b6e4-1111a5560e46?action=share&source=collection_link&creator=29681374"
+		"_exporter_id": "29591469",
+		"_collection_link": "https://programaciontb202302.postman.co/workspace/New-Team-Workspace~86beb099-8798-4201-805a-fcf9f333e296/collection/29591469-ffabb4db-6185-4c69-b6e4-1111a5560e46?action=share&source=collection_link&creator=29591469"
 	},
 	"item": [
 		{
@@ -49,7 +49,7 @@
 			"response": []
 		},
 		{
-			"name": "InformeOperacionAutobus_GET",
+			"name": "InformeOperacionAutobuses_GET",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -70,12 +70,12 @@
 			"response": []
 		},
 		{
-			"name": "InformeUtilizacionCargador_GET",
+			"name": "InformeUtilizacionCargadores_GET",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7024/api/InformeUtilizacionCargador/25",
+					"raw": "https://localhost:7024/api/InformeUtilizacionCargadores/25",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -83,7 +83,7 @@
 					"port": "7024",
 					"path": [
 						"api",
-						"InformeUtilizacionCargador",
+						"InformeUtilizacionCargadores",
 						"25"
 					]
 				}
