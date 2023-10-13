@@ -80,3 +80,6 @@ Se hizo la creación de 26 endpoints que se muestran a continuación:
 25. **Obtener informe de utilización de cargadores por hora:** Para obtener el informe de todas las utilizaciones de cargadores por hora, se envía una petición GET a la dirección https://localhost:7024/api/InformeUtilizacionCargadores
 
 26. **Obtener informe de utilización de buses por hora:** Para obtener el informe de todas las operaciones de buses por hora, se envía una petición GET a la dirección https://localhost:7024/api/InformeOperacionAutobuses
+
+### Ejemplo de programación
+![Programación transporte público](https://i.imgur.com/s6UhKOM.png)

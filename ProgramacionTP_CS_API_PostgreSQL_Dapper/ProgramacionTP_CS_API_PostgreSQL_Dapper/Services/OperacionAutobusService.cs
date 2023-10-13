@@ -51,7 +51,7 @@ namespace ProgramacionTB_CS_API_PostgreSQL_Dapper.Services
                 throw new AppValidationException($"Ya existe una operaciín con el autobus {operacionAutobusExistente.Autobus_id} en el horario {operacionAutobusExistente.Horario_id}");
 
             // Se valida que el autobus no haya estado operando 4 veces sin cargarse
-            int maxOperandoCount = 4;
+            int maxOperandoCount = 6;
             int operandoCount = 0;
 
             for (int hora = 0; hora <= unaOperacionAutobus.Horario_id; hora++)
